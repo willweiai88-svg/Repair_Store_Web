@@ -1,0 +1,48 @@
+.glass-panel {
+  background: rgba(17, 25, 40, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.store-btn:hover {
+  background: rgba(0, 243, 255, 0.05);
+  color: #00f3ff;
+}
+
+.store-btn.active {
+  background: #00f3ff;
+  color: #080b12;
+  font-weight: 800;
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+}
+
+.status-select {
+  background-color: #000;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.status-select:focus {
+  border-color: #00f3ff;
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+}
+
+.status-pending {
+  color: #9ca3af;
+}
+.status-repairing {
+  color: #fadb5f;
+}
+.status-completed {
+  color: #10b981;
+}
+.status-cancelled {
+  color: #ef4444;
+}

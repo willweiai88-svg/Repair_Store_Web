@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sim & Mobile | Geek-Level Device Repair</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neonBlue: '#00f3ff',
+                        neonGold: '#fadb5f',
+                        darkBg: '#0b0f19',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="antialiased font-sans selection:bg-neonBlue selection:text-black bg-darkBg text-white">
+
+    <nav class="fixed w-full z-50 glass-panel border-b-0 border-white/100">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center relative">
+            <div class="text-2xl font-bold tracking-wider text-neonBlue">
+                SIM <span class="text-white">&</span> MOBILE
+            </div>
+            
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="#" class="hover:text-neonBlue transition">Home</a>
+                <a href="services.html" class="hover:text-neonBlue transition">Pricing</a>
+                <a href="#process" class="hover:text-neonBlue transition">Process</a>
+                <a href="#faq" class="hover:text-neonBlue transition">FAQ</a>
+                <a href="#enquiry" class="hover:text-neonBlue transition">Enquiry</a>
+                <div id="user-menu" class="ml-4">
+                    <a href="login.html"
+                        class="bg-neonBlue text-black px-5 py-2 rounded-full font-semibold hover:bg-white transition shadow-[0_0_15px_rgba(0,243,255,0.5)]">Member
+                        Login</a>
+                </div>
+            </div>
+
+            <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none" aria-label="Toggle Navigation Menu" aria-expanded="false">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+            
+            <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-[#0b0f19] border-b border-white/10 md:hidden flex-col shadow-lg pb-4">
+                <a href="#" class="block px-6 py-4 border-b border-white/5 hover:text-neonBlue transition">Home</a>
+                <a href="#services" class="block px-6 py-4 border-b border-white/5 hover:text-neonBlue transition">Pricing</a>
+                <a href="#process" class="block px-6 py-4 border-b border-white/5 hover:text-neonBlue transition">Process</a>
+                <a href="#faq" class="block px-6 py-4 border-b border-white/5 hover:text-neonBlue transition">FAQ</a>
+                <a href="#enquiry" class="block px-6 py-4 border-b border-white/5 hover:text-neonBlue transition">Enquiry</a>
+                <div id="mobile-user-menu" class="px-6 pt-4">
+                    <a href="login.html" class="inline-block bg-neonBlue text-black px-5 py-2 rounded-full font-semibold hover:bg-white transition shadow-[0_0_15px_rgba(0,243,255,0.5)]">Member Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="relative pt-48 pb-32 px-6 text-center overflow-hidden">
+            <div
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-neonBlue/10 blur-[100px] rounded-full pointer-events-none -z-10">
+            </div>
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight">
+                Bring Your Device <br><span class="text-neonBlue glow-text mt-2 inline-block">Back to Life</span>
+            </h1>
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10">
+                Expert repairs for flagship phones, tablets, and high-performance laptops. Transparent pricing. Registered
+                members get exclusive parts discounts.
+            </p>
+            <section id="member-quick-access" class="max-w-7xl mx-auto px-6 -mt-10 mb-20 hidden" aria-label="Member Quick Access">
+                <div
+                    class="glass-panel p-6 rounded-3xl border border-neonBlue/20 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="flex items-center gap-5">
+                        <div
+                            class="w-12 h-12 bg-neonBlue/10 rounded-full flex items-center justify-center text-neonBlue animate-pulse" aria-hidden="true">
+                            📡
+                        </div>
+                        <div>
+                            <h2 class="text-sm text-gray-400 font-mono uppercase tracking-widest">Active Repair Sync</h2>
+                            <p id="quick-status-text" class="text-lg font-bold text-white">Loading your protocol status...
+                            </p>
+                        </div>
+                    </div>
+                    <a href="dashboard.html" class="text-neonBlue hover:underline font-bold tracking-tighter">
+                        OPEN DASHBOARD →
+                    </a>
+                </div>
+            </section>
+            <div class="flex flex-col sm:flex-row justify-center gap-6 mt-8">
+                <a href="services.html"
+                    class="bg-neonBlue text-black px-10 py-4 rounded-full font-black text-lg hover:bg-white hover:shadow-[0_0_30px_rgba(0,243,255,0.6)] transition-all transform hover:-translate-y-1 uppercase tracking-wide">
+                    Start Instant Quote
+                </a>
+                <a href="#locations"
+                    class="bg-black/50 border border-white/20 text-white px-10 py-4 rounded-full font-bold text-lg hover:border-neonBlue hover:text-neonBlue transition-all backdrop-blur-sm">
+                    Find a Store
+                </a>
+            </div>
+        </section>
+
+        <section class="max-w-6xl mx-auto px-6 pb-20">
+            <h2 class="sr-only">Our Service Guarantees</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="reveal glass-panel p-6 rounded-2xl">
+                    <div class="text-3xl mb-3" aria-hidden="true">🛡️</div>
+                    <h3 class="font-bold text-white text-lg">Lifetime Warranty</h3>
+                    <p class="text-sm text-gray-400 mt-2">On all premium screen replacements.</p>
+                </div>
+                <div class="reveal delay-100 glass-panel p-6 rounded-2xl">
+                    <div class="text-3xl mb-3" aria-hidden="true">⚡</div>
+                    <h3 class="font-bold text-white text-lg">Same-Day Repair</h3>
+                    <p class="text-sm text-gray-400 mt-2">Most common repairs done in under 60 mins.</p>
+                </div>
+                <div class="reveal delay-200 glass-panel p-6 rounded-2xl">
+                    <div class="text-3xl mb-3" aria-hidden="true">🔒</div>
+                    <h3 class="font-bold text-white text-lg">Data Secure</h3>
+                    <p class="text-sm text-gray-400 mt-2">Your privacy is guaranteed. No data loss.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-gradient-to-r from-gray-900 to-[#1a1c23] border-y border-neonGold/30 py-10">
+            <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-6">
+                    <div class="text-neonGold text-5xl" aria-hidden="true">🛠️</div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-neonGold mb-2">Need Laptop, Mobile & iPad Repairs?</h2>
+                        <p class="text-gray-300">Worry not, we see to the issue your gadget needs, ensuring it gets a new
+                            lease on life.</p>
+                    </div>
+                </div>
+                <a href="services.html"
+                    class="bg-white text-black px-8 py-3 rounded-full font-bold hover:bg-neonGold transition whitespace-nowrap">CHECK
+                    PRICES</a>
+            </div>
+        </section>
+
+        <section id="process" class="bg-black/50 py-20">
+            <div class="reveal max-w-7xl mx-auto px-6">
+                <h2 class="text-3xl font-bold mb-16 text-center">How It <span class="text-neonBlue">Works</span></h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+                    <div
+                        class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gray-800 -z-10 transform -translate-y-1/2">
+                    </div>
+                    <div class="text-center relative">
+                        <div
+                            class="w-16 h-16 bg-[#0b0f19] border-2 border-neonBlue rounded-full flex items-center justify-center text-xl font-bold text-neonBlue mx-auto mb-6 shadow-[0_0_15px_rgba(0,243,255,0.4)]">
+                            01</div>
+                        <h3 class="text-xl font-bold text-white mb-3">Get a Quote</h3>
+                        <p class="text-gray-400">Check our transparent pricing online or submit a quick enquiry.</p>
+                    </div>
+                    <div class="text-center relative">
+                        <div
+                            class="w-16 h-16 bg-[#0b0f19] border-2 border-neonBlue rounded-full flex items-center justify-center text-xl font-bold text-neonBlue mx-auto mb-6 shadow-[0_0_15px_rgba(0,243,255,0.4)]">
+                            02</div>
+                        <h3 class="text-xl font-bold text-white mb-3">Drop Off / Mail In</h3>
+                        <p class="text-gray-400">Bring your device to our Sydney store or use our secure mail-in service.
+                        </p>
+                    </div>
+                    <div class="text-center relative">
+                        <div
+                            class="w-16 h-16 bg-[#0b0f19] border-2 border-neonBlue rounded-full flex items-center justify-center text-xl font-bold text-neonBlue mx-auto mb-6 shadow-[0_0_15px_rgba(0,243,255,0.4)]">
+                            03</div>
+                        <h3 class="text-xl font-bold text-white mb-3">Repaired & Returned</h3>
+                        <p class="text-gray-400">We fix it fast, run full diagnostics, and hand back your working device.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-7xl mx-auto px-6 py-20">
+            <h2 class="text-3xl font-bold mb-10 border-l-4 border-neonGold pl-4 text-neonGold">What Our Clients Say</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="reveal glass-panel p-8 rounded-2xl">
+                    <div class="text-neonGold mb-4" aria-hidden="true">★★★★★</div>
+                    <p class="text-gray-300 mb-6">"Absolutely amazing service. Smashed my S24 Ultra screen and they had it
+                        looking brand new in under an hour."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center font-bold">J</div>
+                        <p class="text-white font-bold">James T.</p>
+                    </div>
+                </div>
+                <div class="reveal delay-100 glass-panel p-8 rounded-2xl">
+                    <div class="text-neonGold mb-4" aria-hidden="true">★★★★★</div>
+                    <p class="text-gray-300 mb-6">"Thought my water-damaged MacBook was completely dead. The team here did
+                        an ultrasonic clean and saved all my data."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center font-bold">S</div>
+                        <p class="text-white font-bold">Sarah M.</p>
+                    </div>
+                </div>
+                <div class="reveal delay-200 glass-panel p-8 rounded-2xl">
+                    <div class="text-neonGold mb-4" aria-hidden="true">★★★★★</div>
+                    <p class="text-gray-300 mb-6">"Very professional setup. The transparent pricing online meant no nasty
+                        surprises when I walked in."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center font-bold">D</div>
+                        <p class="text-white font-bold">David K.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="max-w-4xl mx-auto px-6 py-10">
+            <h2 class="text-3xl font-bold mb-8 text-center">Frequently Asked <span class="text-neonBlue">Questions</span>
+            </h2>
+            <div class="space-y-4">
+                <details class="reveal glass-panel rounded-xl group cursor-pointer">
+                    <summary class="p-6 font-bold text-lg flex justify-between items-center text-white">
+                        Do I need to make an appointment? <span
+                            class="text-neonBlue group-open:rotate-180 transition-transform" aria-hidden="true">▼</span>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-400 border-t border-white/10 pt-4 mt-2">Walk-ins are always welcome!
+                        However, booking ensures priority service.</div>
+                </details>
+                <details class="reveal glass-panel rounded-xl group cursor-pointer">
+                    <summary class="p-6 font-bold text-lg flex justify-between items-center text-white">
+                        Will I lose my data during the repair? <span
+                            class="text-neonBlue group-open:rotate-180 transition-transform" aria-hidden="true">▼</span>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-400 border-t border-white/10 pt-4 mt-2">For hardware repairs, data
+                        remains safe. We always recommend backing up just in case.</div>
+                </details>
+            </div>
+        </section>
+
+        <section id="enquiry" class="reveal py-20 relative">
+            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10">
+            </div>
+            <div class="max-w-4xl mx-auto px-6 relative z-10">
+                <div class="glass-panel p-10 md:p-14 rounded-3xl shadow-2xl">
+                    <h2 class="text-3xl font-bold mb-8 text-white">Quick <span class="text-neonGold">Enquiry</span></h2>
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><input id="enq-firstName" type="text" placeholder="First Name *" aria-label="First Name"
+                                    class="w-full pb-2 text-white placeholder-gray-400 bg-transparent border-b border-gray-600 focus:border-neonBlue outline-none" required></div>
+                            <div><input id="enq-lastName" type="text" placeholder="Last Name *" aria-label="Last Name"
+                                    class="w-full pb-2 text-white placeholder-gray-400 bg-transparent border-b border-gray-600 focus:border-neonBlue outline-none" required></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><input id="enq-email" type="email" placeholder="Email *" aria-label="Email Address"
+                                    class="w-full pb-2 text-white placeholder-gray-400 bg-transparent border-b border-gray-600 focus:border-neonBlue outline-none" required></div>
+                            <div><input id="enq-phone" type="tel" placeholder="Phone No *" aria-label="Phone Number"
+                                    class="w-full pb-2 text-white placeholder-gray-400 bg-transparent border-b border-gray-600 focus:border-neonBlue outline-none" required></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <select id="enq-service" aria-label="Choose Service" class="w-full pb-2 text-gray-300 appearance-none bg-transparent border-b border-gray-600 focus:border-neonBlue outline-none" required>
+                                    <option value="" disabled selected>Choose Service *</option>
+                                    <option value="screen" class="bg-darkBg">Screen Replacement</option>
+                                    <option value="battery" class="bg-darkBg">Battery Replacement</option>
+                                    <option value="water" class="bg-darkBg">Water Damage</option>
+                                    <option value="motherboard" class="bg-darkBg">Motherboard Repair</option>
+                                    <option value="other" class="bg-darkBg">Other Issue</option>
+                                </select>
+                            </div>
+                            <div><input id="enq-model" type="text" placeholder="Brand/Model *" aria-label="Brand and Model"
+                                    class="w-full pb-2 text-white placeholder-gray-400 bg-transparent border-b border-gray-600 focus:border-neonBlue outline-none" required></div>
+                        </div>
+                        <div><textarea id="enq-desc" rows="4" placeholder="Describe your problem *" aria-label="Describe your problem"
+                                class="w-full pb-2 text-white placeholder-gray-400 bg-transparent border-b border-gray-600 focus:border-neonBlue outline-none resize-none mt-4" required></textarea>
+                        </div>
+                        <button type="button" id="btn-submit-enquiry"
+                            class="bg-neonGold text-black font-bold py-3 px-10 rounded-full hover:bg-white transition mt-6">SUBMIT</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="locations" class="max-w-7xl mx-auto px-6 py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white">Find a <span class="text-neonBlue">Sim & Mobile</span> Near You
+                </h2>
+                <p class="text-gray-400 mt-4">Visit any of our 5 premier locations across Sydney for walk-in repairs.</p>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-6">
+                <div class="reveal glass-panel p-6 rounded-2xl w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] flex flex-col hover-glow">
+                    <div class="text-neonBlue text-3xl mb-3 text-center" aria-hidden="true">📍</div>
+                    <h3 class="text-xl font-bold text-white text-center mb-1">Sydney CBD</h3>
+                    <p class="text-gray-400 text-sm text-center mb-4 flex-grow">Shop LG05 / 580 George St<br>Sydney NSW 2000
+                    </p>
+                    <div class="rounded-xl overflow-hidden border border-white/10 h-48 w-full relative">
+                        <iframe title="Google Maps location for Sydney CBD Store" class="absolute top-0 left-0 w-full h-full" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q=580+George+St,+Sydney+NSW+2000&t=&z=14&ie=UTF8&iwloc=&output=embed"></iframe>
+                    </div>
+                    <a href="https://maps.google.com/?q=580+George+St,+Sydney+NSW+2000" target="_blank" aria-label="Open Sydney CBD store in Google Maps"
+                        class="mt-5 block text-center text-sm font-bold border border-neonBlue text-neonBlue py-2.5 rounded-full hover:bg-neonBlue hover:text-black transition">
+                        Open in Google Maps ↗
+                    </a>
+                </div>
+
+                <div class="reveal delay-100 glass-panel p-6 rounded-2xl w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] flex flex-col hover-glow">
+                    <div class="text-neonBlue text-3xl mb-3 text-center" aria-hidden="true">📍</div>
+                    <h3 class="text-xl font-bold text-white text-center mb-1">World Square</h3>
+                    <p class="text-gray-400 text-sm text-center mb-4 flex-grow">Shop 925 / 644 George St<br>Sydney NSW 2000
+                    </p>
+                    <div class="rounded-xl overflow-hidden border border-white/10 h-48 w-full relative">
+                        <iframe title="Google Maps location for World Square Store" class="absolute top-0 left-0 w-full h-full" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q=644+George+St,+Sydney+NSW+2000&t=&z=14&ie=UTF8&iwloc=&output=embed"></iframe>
+                    </div>
+                    <a href="https://maps.google.com/?q=644+George+St,+Sydney+NSW+2000" target="_blank" aria-label="Open World Square store in Google Maps"
+                        class="mt-5 block text-center text-sm font-bold border border-neonBlue text-neonBlue py-2.5 rounded-full hover:bg-neonBlue hover:text-black transition">
+                        Open in Google Maps ↗
+                    </a>
+                </div>
+
+                <div class="reveal delay-200 glass-panel p-6 rounded-2xl w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] flex flex-col hover-glow">
+                    <div class="text-neonBlue text-3xl mb-3 text-center" aria-hidden="true">📍</div>
+                    <h3 class="text-xl font-bold text-white text-center mb-1">Burwood</h3>
+                    <p class="text-gray-400 text-sm text-center mb-4 flex-grow">Shop 3C, 127/133 Burwood Rd<br>Burwood NSW 2134</p>
+                    <div class="rounded-xl overflow-hidden border border-white/10 h-48 w-full relative">
+                        <iframe title="Google Maps location for Burwood Store" class="absolute top-0 left-0 w-full h-full" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q=127/133+Burwood+Rd,+Burwood+NSW+2134&t=&z=14&ie=UTF8&iwloc=&output=embed"></iframe>
+                    </div>
+                    <a href="https://maps.google.com/?q=127/133+Burwood+Rd,+Burwood+NSW+2134" target="_blank" aria-label="Open Burwood store in Google Maps"
+                        class="mt-5 block text-center text-sm font-bold border border-neonBlue text-neonBlue py-2.5 rounded-full hover:bg-neonBlue hover:text-black transition">
+                        Open in Google Maps ↗
+                    </a>
+                </div>
+
+                <div class="reveal delay-100 glass-panel p-6 rounded-2xl w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] flex flex-col hover-glow">
+                    <div class="text-neonBlue text-3xl mb-3 text-center" aria-hidden="true">📍</div>
+                    <h3 class="text-xl font-bold text-white text-center mb-1">Mascot</h3>
+                    <p class="text-gray-400 text-sm text-center mb-4 flex-grow">Shop 15 / 21 Etherden Walk<br>Mascot NSW 2020</p>
+                    <div class="rounded-xl overflow-hidden border border-white/10 h-48 w-full relative">
+                        <iframe title="Google Maps location for Mascot Store" class="absolute top-0 left-0 w-full h-full" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q=21+Etherden+Walk,+Mascot+NSW+2020&t=&z=14&ie=UTF8&iwloc=&output=embed"></iframe>
+                    </div>
+                    <a href="https://maps.google.com/?q=21+Etherden+Walk,+Mascot+NSW+2020" target="_blank" aria-label="Open Mascot store in Google Maps"
+                        class="mt-5 block text-center text-sm font-bold border border-neonBlue text-neonBlue py-2.5 rounded-full hover:bg-neonBlue hover:text-black transition">
+                        Open in Google Maps ↗
+                    </a>
+                </div>
+
+                <div class="reveal delay-200 glass-panel p-6 rounded-2xl w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] flex flex-col hover-glow">
+                    <div class="text-neonBlue text-3xl mb-3 text-center" aria-hidden="true">📍</div>
+                    <h3 class="text-xl font-bold text-white text-center mb-1">Kingsford</h3>
+                    <p class="text-gray-400 text-sm text-center mb-4 flex-grow">488 Anzac Parade<br>Kingsford NSW 2032</p>
+                    <div class="rounded-xl overflow-hidden border border-white/10 h-48 w-full relative">
+                        <iframe title="Google Maps location for Kingsford Store" class="absolute top-0 left-0 w-full h-full" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q=488+Anzac+Parade,+Kingsford+NSW+2032&t=&z=14&ie=UTF8&iwloc=&output=embed"></iframe>
+                    </div>
+                    <a href="https://maps.google.com/?q=488+Anzac+Parade,+Kingsford+NSW+2032" target="_blank" aria-label="Open Kingsford store in Google Maps"
+                        class="mt-5 block text-center text-sm font-bold border border-neonBlue text-neonBlue py-2.5 rounded-full hover:bg-neonBlue hover:text-black transition">
+                        Open in Google Maps ↗
+                    </a>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-black py-12 border-t border-white/10 mt-10">
+        <h2 class="sr-only">Site Information and Contact</h2>
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-gray-400">
+            <div>
+                <h3 class="text-neonBlue text-xl font-bold mb-4">Sim & Mobile</h3>
+                <p>Dedicated to providing geek-level device repair experiences. Transparent pricing, professional
+                    techniques.</p>
+            </div>
+            <div>
+                <h3 class="text-white text-lg font-bold mb-4">Contact Us</h3>
+                <p>📍 Sydney, NSW, Australia</p>
+                <p>📞 1300-SIM-MOB</p>
+                <p>✉️ support@simmobile.com.au</p>
+            </div>
+            <div>
+                <h3 class="text-white text-lg font-bold mb-4">Business Hours</h3>
+                <p>Mon - Fri: 9:00 AM - 6:00 PM</p>
+                <p>Weekends: 10:00 AM - 4:00 PM</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', !isExpanded);
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('flex');
+        });
+    </script>
+    <script src="js/config.js"></script>
+    <script src="js/index.js"></script>
+</body>
+
+</html>

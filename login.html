@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication - Sim & Mobile</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { neonBlue: '#00f3ff', darkBg: '#0b0f19' } } } }
+    </script>
+    
+    <link rel="stylesheet" href="css/auth-theme.css">
+    
+</head>
+<body class="flex items-center justify-center min-h-screen antialiased selection:bg-neonBlue selection:text-black relative">
+
+    <div class="glow-orb-1" aria-hidden="true"></div>
+    <div class="glow-orb-2" aria-hidden="true"></div>
+
+    <a href="index.html" class="absolute top-8 left-8 text-gray-400 hover:text-neonBlue transition flex items-center gap-2">
+        <span aria-hidden="true">&larr;</span> Back to Site
+    </a>
+
+    <main class="glass-panel p-8 md:p-10 rounded-3xl w-[90%] max-w-[420px] relative overflow-hidden">
+        
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold tracking-wider text-neonBlue mb-1">SIM <span class="text-white">&</span> MOBILE</h1>
+            <p class="text-gray-400 text-sm">Geek-Level Device Repair</p>
+        </div>
+
+        <div class="flex justify-center gap-8 mb-8 border-b border-white/10">
+            <button id="tab-login" class="tab-btn tab-active pb-2 font-semibold tracking-wide">Sign In</button>
+            <button id="tab-register" class="tab-btn tab-inactive pb-2 font-semibold tracking-wide">Create Account</button>
+        </div>
+
+        <div id="form-login" class="form-section active-form">
+            <h2 class="text-2xl font-bold mb-6 text-white">Welcome Back</h2>
+            <form id="form-login-node">
+                <div class="space-y-4">
+                    <div><input type="email" id="login-email" aria-label="Email Address" placeholder="Email Address" class="input-field w-full rounded-xl px-4 py-3 text-white placeholder-gray-400" required></div>
+                    <div><input type="password" id="login-password" aria-label="Password" placeholder="Password" class="input-field w-full rounded-xl px-4 py-3 text-white placeholder-gray-400" required></div>
+                </div>
+                
+                <div class="flex justify-between items-center mt-4 mb-6 text-sm">
+                    <label class="flex items-center text-gray-400 cursor-pointer hover:text-white transition">
+                        <input type="checkbox" class="mr-2 accent-neonBlue"> Remember me
+                    </label>
+                    <a href="#" class="text-neonBlue hover:text-white transition">Forgot Password?</a>
+                </div>
+
+                <button type="submit" id="btn-login" class="w-full bg-neonBlue text-black font-bold py-3 rounded-xl hover:bg-white transition shadow-[0_0_15px_rgba(0,243,255,0.4)]">
+                    Access Account
+                </button>
+            </form>
+        </div>
+
+        <div id="form-register" class="form-section hidden-form">
+            <h2 class="text-2xl font-bold mb-6 text-white">Join the Geeks</h2>
+            <form id="form-register-node">
+                <div class="space-y-4 mb-6">
+                    <div><input type="text" id="reg-name" aria-label="Full Name" placeholder="Full Name" class="input-field w-full rounded-xl px-4 py-3 text-white placeholder-gray-400" required></div>
+                    <div><input type="email" id="reg-email" aria-label="Email Address" placeholder="Email Address" class="input-field w-full rounded-xl px-4 py-3 text-white placeholder-gray-400" required></div>
+                    <div><input type="password" id="reg-password" aria-label="Create Password" placeholder="Create Password" class="input-field w-full rounded-xl px-4 py-3 text-white placeholder-gray-400" required></div>
+                </div>
+
+                <button type="submit" id="btn-register" class="w-full bg-transparent border-2 border-neonBlue text-neonBlue font-bold py-3 rounded-xl hover:bg-neonBlue hover:text-black transition shadow-[0_0_15px_rgba(0,243,255,0.2)]">
+                    Create Member Account
+                </button>
+                <p class="text-xs text-gray-400 mt-4 text-center">By registering, you agree to our Terms of Service & Privacy Policy.</p>
+            </form>
+        </div>
+    </main>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

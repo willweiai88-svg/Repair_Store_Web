@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Staff Terminal - Sim & Mobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { neonBlue: '#00f3ff', neonGold: '#fadb5f', darkBg: '#080b12' } } } }
+    </script>
+    <link rel="stylesheet" href="css/admin-theme.css">
+</head>
+
+<body class="bg-darkBg text-white min-h-screen flex antialiased">
+
+    <aside class="w-64 border-r border-white/5 bg-black/20 backdrop-blur-xl p-6 flex flex-col fixed h-full">
+
+
+
+
+        <div class="mb-10">
+            <h2 class="text-xl font-black text-neonBlue italic tracking-tighter">SIM & MOBILE</h2>
+            <p class="text-[10px] text-gray-500 uppercase tracking-widest">Management System</p>
+        </div>
+
+        <nav class="space-y-2 flex-grow">
+            <p class="text-[10px] text-gray-500 uppercase font-bold mb-4 px-3">Data Modules</p>
+            <button onclick="switchView('bookings')" id="tab-bookings"
+                class="w-full text-left px-4 py-3 rounded-xl transition text-sm bg-white/10 text-neonBlue font-bold">Repairs
+                & Bookings</button>
+            <button onclick="switchView('enquiries')" id="tab-enquiries"
+                class="w-full text-left px-4 py-3 rounded-xl transition text-sm text-gray-400 hover:text-white">Customer
+                Enquiries</button>
+            <div id="location-filters-container" class="mt-8">
+                <p class="text-[10px] text-gray-500 uppercase font-bold mb-4 px-3">Location Filter</p>
+                <button onclick="changeStore('All')"
+                    class="store-btn active w-full text-left px-4 py-3 rounded-xl transition text-sm">All
+                    Protocols</button>
+                <button onclick="changeStore('Sydney CBD')"
+                    class="store-btn w-full text-left px-4 py-3 rounded-xl transition text-sm">Sydney CBD</button>
+                <button onclick="changeStore('World Square')"
+                    class="store-btn w-full text-left px-4 py-3 rounded-xl transition text-sm">World Square</button>
+                <button onclick="changeStore('Burwood')"
+                    class="store-btn w-full text-left px-4 py-3 rounded-xl transition text-sm">Burwood</button>
+                <button onclick="changeStore('Mascot')"
+                    class="store-btn w-full text-left px-4 py-3 rounded-xl transition text-sm">Mascot</button>
+                <button onclick="changeStore('Kingsford')"
+                    class="store-btn w-full text-left px-4 py-3 rounded-xl transition text-sm">Kingsford</button>
+            </div>
+        </nav>
+
+        <button onclick="window.location.href='index.html'"
+            class="mt-auto text-xs text-gray-500 hover:text-white transition">← Exit Terminal</button>
+    </aside>
+
+    <main class="flex-grow ml-64 p-8">
+        <header class="flex justify-between items-end mb-10">
+            <div>
+                <h1 id="current-store-title" class="text-4xl font-black uppercase tracking-tighter">All <span
+                        class="text-neonBlue">Protocols</span></h1>
+                <p class="text-gray-500 font-mono text-xs mt-1">Real-time database sync active...</p>
+            </div>
+
+            <div class="flex gap-6">
+                <div class="glass-panel px-6 py-2 rounded-2xl border-l-2 border-neonBlue">
+                    <p class="text-[10px] text-gray-500 uppercase">Active Task</p>
+                    <p id="active-count" class="text-xl font-bold">0</p>
+                </div>
+                <div class="glass-panel px-6 py-2 rounded-2xl border-l-2 border-neonGold">
+                    <p class="text-[10px] text-gray-500 uppercase">Today Revenue</p>
+                    <p id="revenue-count" class="text-xl font-bold">$0</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="glass-panel rounded-3xl overflow-hidden border border-white/5 shadow-2xl">
+            <table class="w-full text-left border-collapse">
+                <thead id="admin-table-head" class="bg-white/5 text-[10px] uppercase tracking-widest text-gray-400">
+                    <tr>
+                        <th class="px-6 py-5">Protocol ID</th>
+                        <th class="px-6 py-5">Customer</th>
+                        <th class="px-6 py-5">Device & Service</th>
+                        <th class="px-6 py-5">Location</th>
+                        <th class="px-6 py-5">Status Update</th>
+                        <th class="px-6 py-5 text-right">Price</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-table-body" class="divide-y divide-white/5">
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <script src="js/config.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

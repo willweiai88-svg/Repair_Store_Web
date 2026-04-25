@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instant Quote | Sim & Mobile</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neonBlue: '#00f3ff',
+                        neonGold: '#fadb5f',
+                        darkBg: '#080b12',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body
+    class="antialiased font-sans bg-darkBg text-white selection:bg-neonBlue selection:text-black min-h-screen flex flex-col">
+
+    <nav class="fixed w-full z-50 bg-darkBg/90 backdrop-blur-xl border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold tracking-wider text-neonBlue hover:opacity-80 transition">
+                SIM <span class="text-white">&</span> MOBILE
+            </a>
+
+            <a href="index.html" aria-label="Return to Home"
+                class="hidden md:flex items-center gap-2 text-gray-300 hover:text-neonBlue transition font-mono text-sm border border-gray-600 hover:border-neonBlue px-4 py-2 rounded-full">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                    </path>
+                </svg>
+                Back to Home
+            </a>
+
+            <a href="index.html" aria-label="Return to Home" class="md:hidden text-gray-300 hover:text-neonBlue transition p-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                    </path>
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <main class="flex-grow pt-32 pb-20 px-6 flex flex-col items-center justify-center relative overflow-hidden">
+        <div
+            class="absolute top-1/4 left-1/2 -translate-x-1/2 w-3/4 h-3/4 bg-neonBlue/10 blur-[120px] rounded-full pointer-events-none -z-10">
+        </div>
+
+        <div class="text-center mb-10 w-full max-w-4xl">
+            <h1 class="text-4xl md:text-5xl font-black mb-4">Interactive <span
+                    class="text-neonBlue glow-text">Diagnosis</span></h1>
+            <p class="text-gray-400">Select your device step-by-step to generate an accurate repair quote.</p>
+        </div>
+
+        <div class="w-full max-w-4xl glass-panel rounded-3xl p-6 md:p-10 relative overflow-hidden">
+            <div class="mb-10 relative">
+                <div class="absolute top-5 left-[10%] right-[10%] h-0.5 bg-gray-800 -z-10"></div>
+                <div id="progress-bar"
+                    class="absolute top-5 left-[10%] h-0.5 bg-neonBlue shadow-[0_0_8px_rgba(0,243,255,0.8)] transition-all duration-500 w-0 -z-10">
+                </div>
+
+                <div class="flex justify-between relative z-10 px-2 md:px-8">
+                    <div class="flex flex-col items-center step-indicator" id="ind-1">
+                        <div
+                            class="w-10 h-10 rounded-full bg-neonBlue text-black font-bold flex items-center justify-center shadow-[0_0_15px_rgba(0,243,255,0.4)] transition-all">
+                            1</div>
+                        <span class="text-xs mt-3 text-neonBlue font-mono tracking-wider">Brand</span>
+                    </div>
+                    <div class="flex flex-col items-center step-indicator " id="ind-2">
+                        <div
+                            class="w-10 h-10 rounded-full bg-darkBg border-2 border-gray-700 flex items-center justify-center transition-all">
+                            2</div>
+                        <span class="text-xs mt-3 text-gray-400 font-mono tracking-wider">Series</span>
+                    </div>
+                    <div class="flex flex-col items-center step-indicator " id="ind-3">
+                        <div
+                            class="w-10 h-10 rounded-full bg-darkBg border-2 border-gray-700 flex items-center justify-center transition-all">
+                            3</div>
+                        <span class="text-xs mt-3 text-gray-400 font-mono tracking-wider">Model</span>
+                    </div>
+                    <div class="flex flex-col items-center step-indicator " id="ind-4">
+                        <div
+                            class="w-10 h-10 rounded-full bg-darkBg border-2 border-gray-700 flex items-center justify-center transition-all">
+                            4</div>
+                        <span class="text-xs mt-3 text-gray-400 font-mono tracking-wider">Service</span>
+                    </div>
+                    <div class="flex flex-col items-center step-indicator " id="ind-5">
+                        <div
+                            class="w-10 h-10 rounded-full bg-darkBg border-2 border-gray-700 flex items-center justify-center transition-all">
+                            5</div>
+                        <span class="text-xs mt-3 text-gray-400 font-mono tracking-wider">Quote</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center mb-6 h-8 border-b border-white/5 pb-4">
+                <button id="btn-back"
+                    class="text-gray-400 hover:text-neonBlue flex items-center gap-2 hidden transition font-mono text-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg> Back
+                </button>
+                <div id="loading-spinner"
+                    class="hidden text-neonBlue font-mono text-sm animate-pulse flex items-center gap-2 ml-auto">
+                    <div class="w-4 h-4 border-2 border-neonBlue border-t-transparent rounded-full animate-spin"></div>
+                    Syncing DB...
+                </div>
+            </div>
+
+            <div id="content-area" class="min-h-[300px]">
+                <div id="view-1" class="grid grid-cols-2 md:grid-cols-4 gap-4 step-transition"></div>
+                <div id="view-2" class="grid grid-cols-2 md:grid-cols-3 gap-4 hidden step-transition"></div>
+                <div id="view-3" class="grid grid-cols-1 md:grid-cols-2 gap-4 hidden step-transition"></div>
+                <div id="view-4" class="grid grid-cols-1 md:grid-cols-2 gap-4 hidden step-transition"></div>
+                <div id="view-5" class="hidden step-transition"></div>
+            </div>
+        </div>
+    </main>
+    <script src="js/config.js"></script>
+    <script src="js/services.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,190 @@
+/* =========================================
+   Base Styles
+   ========================================= */
+body {
+  background-color: #0b0f19;
+  color: white;
+  scroll-behavior: smooth;
+}
+
+/* =========================================
+   UI Components
+   ========================================= */
+.glass-panel {
+  background-color: rgba(17, 25, 40, 0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.neon-text {
+  text-shadow:
+    0 0 10px #00f3ff,
+    0 0 20px #00f3ff;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+}
+
+/*Form Inputs*/
+input,
+select,
+textarea {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  transition: border-color 0.3s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-bottom: 2px solid #00f3ff;
+}
+
+/* FAQ Animations*/
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Quote Widget */
+.step-hidden {
+  display: none;
+  opacity: 0;
+}
+
+.step-active {
+  display: block;
+  opacity: 1;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.brand-card,
+.model-card,
+.repair-option {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.brand-card:hover,
+.model-card:hover,
+.repair-option:hover {
+  border-color: #00f3ff;
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+  background-color: rgba(0, 243, 255, 0.05);
+}
+
+.card-selected {
+  border-color: #00f3ff;
+  background-color: rgba(0, 243, 255, 0.1);
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+}
+
+/* Scroll Reveal Animations*/
+.reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.delay-100 {
+  transition-delay: 100ms;
+}
+.delay-200 {
+  transition-delay: 200ms;
+}
+.delay-300 {
+  transition-delay: 300ms;
+}
+
+/*servies*/
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #080b12;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 243, 255, 0.3);
+  border-radius: 10px;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+  border-color: rgba(0, 243, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.glow-text {
+  text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+}
+.glow-gold {
+  text-shadow: 0 0 15px rgba(250, 219, 95, 0.5);
+}
+
+.step-transition {
+  transition: all 0.4s ease-in-out;
+}
+
+.absolute.top-5.left-\[10\%\].right-\[10\%\] {
+  left: 12.5% !important;
+  right: 12.5% !important;
+}
+
+.step-indicator div {
+  position: relative;
+  z-index: 20;
+}
+
+.bg-neonBlue\/20 {
+  background-color: #080b12 !important;
+  box-shadow: inset 0 0 0 2px #00f3ff;
+}
+
+.step-indicator div svg {
+  position: relative;
+  z-index: 30;
+}
+
+#progress-bar,
+.absolute.top-5.bg-gray-800 {
+  z-index: 10;
+}
+
+.absolute.top-5.left-\[10\%\].right-\[10\%\] {
+  left: 12% !important;
+  right: 12% !important;
+}
+
+.step-indicator span {
+  position: relative;
+  z-index: 40;
+}

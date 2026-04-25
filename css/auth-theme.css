@@ -1,0 +1,104 @@
+body {
+  background-color: #0b0f19;
+  color: white;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.glow-orb-1 {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(
+    circle,
+    rgba(0, 243, 255, 0.15) 0%,
+    transparent 70%
+  );
+  filter: blur(80px);
+  z-index: -1;
+  animation: float 10s ease-in-out infinite;
+}
+.glow-orb-2 {
+  position: absolute;
+  bottom: -20%;
+  right: -10%;
+  width: 40vw;
+  height: 40vw;
+  background: radial-gradient(
+    circle,
+    rgba(0, 100, 255, 0.15) 0%,
+    transparent 70%
+  );
+  filter: blur(80px);
+  z-index: -1;
+  animation: float 12s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(30px) scale(1.05);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 玻璃拟物面板 */
+.glass-panel {
+  background: rgba(17, 25, 40, 0.65);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(0, 243, 255, 0.1);
+}
+
+.input-field {
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+.input-field:focus {
+  outline: none;
+  border-color: #00f3ff;
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.form-section {
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+.hidden-form {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transform: translateX(20px);
+}
+.active-form {
+  opacity: 1;
+  pointer-events: auto;
+  position: relative;
+  transform: translateX(0);
+}
+
+.tab-btn {
+  transition:
+    color 0.3s,
+    border-color 0.3s;
+}
+.tab-active {
+  color: #00f3ff;
+  border-bottom: 2px solid #00f3ff;
+}
+.tab-inactive {
+  color: #6b7280;
+  border-bottom: 2px solid transparent;
+}
