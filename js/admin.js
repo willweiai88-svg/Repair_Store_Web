@@ -1,7 +1,7 @@
 let allBookings = [];
 let allEnquiries = [];
 let currentFilter = 'All';
-let currentView = 'bookings'; // dafault will be bookings page
+let currentView = 'bookings'; // default will be bookings page
 
 document.addEventListener('DOMContentLoaded', async () => {
     await fetchBookings();
@@ -81,10 +81,10 @@ function renderTable() {
         const tr = document.createElement('tr');
         tr.className = "hover:bg-white/[0.02] transition-colors group";
         tr.innerHTML = `
-            <td class="px-6 py-4 font-mono text-[10px] text-gray-500">${order._id.substring(0, 8)}...</td>
+            <td class="px-6 py-4 font-mono text-[10px] text-gray-400">${order._id.substring(0, 8)}...</td>
             <td class="px-6 py-4">
                 <p class="font-bold text-sm text-white">${order.customerName}</p>
-                <p class="text-[10px] text-gray-500">${order.phone}</p>
+                <p class="text-[10px] text-gray-400">${order.phone}</p>
             </td>
             <td class="px-6 py-4">
                 <p class="text-xs text-white">${order.device}</p>
@@ -92,7 +92,7 @@ function renderTable() {
             </td>
             <td class="px-6 py-4 text-xs text-gray-400">${order.location}</td>
             <td class="px-6 py-4">
-                <select onchange="updateStatus('${order._id}', this.value)" class="status-select status-${order.status ? order.status.toLowerCase() : ''}">
+                <select aria-label="Update Protocol Status" onchange="updateStatus('${order._id}', this.value)" class="status-select status-${order.status ? order.status.toLowerCase() : ''}">
                     <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
                     <option value="Confirmed" ${order.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
                     <option value="Repairing" ${order.status === 'Repairing' ? 'selected' : ''}>Repairing</option>
@@ -109,6 +109,7 @@ function renderTable() {
     document.getElementById('active-count').innerText = activeTasks;
     document.getElementById('revenue-count').innerText = `$${totalRevenue}`;
 }
+
 // render the enquries table
 function renderEnquiriesTable() {
     const thead = document.getElementById('admin-table-head');
@@ -147,7 +148,7 @@ function renderEnquiriesTable() {
         }
 
         tr.innerHTML = `
-            <td class="px-6 py-4 font-mono text-xs text-gray-500">${dateStr}</td>
+            <td class="px-6 py-4 font-mono text-xs text-gray-400">${dateStr}</td>
             <td class="px-6 py-4">
                 <p class="font-bold text-sm text-white">${enq.firstName} ${enq.lastName}</p>
                 <p class="text-[10px] text-gray-400 select-all">${enq.email}</p>
@@ -159,7 +160,7 @@ function renderEnquiriesTable() {
             </td>
             <td class="px-6 py-4 text-xs text-gray-400 break-words">${enq.description}</td>
             <td class="px-6 py-4 text-right">
-                <select onchange="updateEnquiryStatus('${enq._id}', this.value)" 
+                <select aria-label="Update Enquiry Status" onchange="updateEnquiryStatus('${enq._id}', this.value)" 
                         class="bg-[#0b0f19] border border-white/20 text-white rounded-lg px-3 py-1.5 text-xs outline-none focus:border-neonGold transition cursor-pointer">
                     <option value="New" ${enq.status === 'New' || !enq.status ? 'selected' : ''}>🔵 New</option>
                     <option value="Contacted" ${enq.status === 'Contacted' ? 'selected' : ''}>🟡 Contacted</option>
