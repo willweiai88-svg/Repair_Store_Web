@@ -1,3 +1,4 @@
+// js/dashboard.js
 
 document.addEventListener('DOMContentLoaded', async () => {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
@@ -12,55 +13,54 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   document.getElementById('display-name').innerText = userName
 
-  // We need to fetch all the orders the customer has already booked before
   try {
     const response = await fetch(
       `${window.CONFIG.API_BASE_URL}/api/my-bookings?email=${userEmail}`,
     )
     const orders = await response.json()
-    renderOrders(orders)
+    renderOrders(orders, userName)
   } catch (err) {
     console.error('Dashboard error', err)
   }
 })
-// We used this function to render all the orders on the web
-function renderOrders(orders) {
+
+function renderOrders(orders, currentUserName) {
   const container = document.getElementById('orders-container')
-  // if the customer didnt book any order before
-  // we just end
   if (orders.length === 0) return
 
   container.innerHTML = ''
-  // Since some of the orders may have the warranty
-  // we want to show all these info at the page giving the clear
-  // ideat to the customer
   let activeCount = 0
   let warrantyCount = 0
-  // We have already got all orders, we need to go throguh them
-  // and calculate warranty and display info to customer
+
   orders.forEach((order) => {
-    // Check how many repairs we have already done
     if (order.status !== 'Completed') activeCount++
 
-    // calculate the warranty left
     const warranty = calculateWarranty(order.createdAt, order.status)
     if (warranty.isValid) warrantyCount++
 
-
     const card = document.createElement('div')
-    // we apply the style for this card to display our repair info
     card.className =
       'glass-panel p-6 md:p-8 rounded-3xl border border-white/5 hover:border-neonBlue/30 transition-all group relative overflow-hidden'
 
-    // we format our repair date or the date of the order (if we still
-    // didnt finish that order)
     const repairDate = new Date(order.createdAt).toLocaleDateString('en-AU', {
       day: 'numeric',
       month: 'short',
       year: 'numeric',
     })
-    // We add the content / info into our card element and apply the style to
-    // each card
+
+    // Atomic direct parameter layout rendering engine configuration logic
+    let reviewButtonHTML = '';
+    if (order.status === 'Completed') {
+      // Direct synchronization mapping: button completely disappears if true
+      if (!order.isReviewed) {
+        reviewButtonHTML = `
+          <button onclick="window.openReviewGate('${order._id}', '${order.device}', '${order.service}')" class="mt-3 w-full text-center px-4 py-1.5 rounded-xl border border-neonGold/30 text-neonGold hover:bg-neonGold hover:text-black font-mono text-[10px] transition uppercase font-black tracking-wider shadow-[0_0_10px_rgba(250,219,95,0.05)]">
+              Write Review
+          </button>
+        `;
+      }
+    }
+
     card.innerHTML = `
             <div class="flex flex-col md:flex-row justify-between gap-6 relative z-10">
                 <div class="flex gap-6">
@@ -90,9 +90,10 @@ function renderOrders(orders) {
                         <p class="text-[9px] text-gray-200 font-mono mt-1">${warranty.expiry || ''}</p>
                     </div>
 
-                    <div class="text-right">
+                    <div class="text-right flex flex-col justify-center min-w-[110px]">
                         <p class="text-[10px] text-gray-200 uppercase mb-1 tracking-widest">Total Cost</p>
                         <p class="text-2xl font-black text-white italic">$${order.price}</p>
+                        ${reviewButtonHTML}
                     </div>
                 </div>
             </div>
@@ -108,10 +109,111 @@ function renderOrders(orders) {
   document.getElementById('stat-warranty').innerText = warrantyCount
 }
 
+window.openReviewGate = function(id, device, service) {
+  const reviewModal = document.getElementById('dashboard-review-modal');
+  if (!reviewModal) return;
+  
+  document.getElementById('modal-rev-booking-id').value = id;
+  document.getElementById('modal-rev-device').value = device;
+  document.getElementById('modal-rev-service').value = service;
+  
+  document.getElementById('modal-display-target').innerText = `${device} // ${service}`;
+  
+  reviewModal.classList.remove('hidden');
+  setTimeout(() => reviewModal.classList.remove('opacity-0'), 10);
+  reviewModal.firstElementChild.classList.remove('scale-95');
+  
+  const starButtons = document.querySelectorAll('.dash-star-select');
+  starButtons.forEach(btn => {
+    btn.className = "dash-star-select text-neonGold transition";
+  });
+  
+  const reviewForm = document.getElementById('dashboard-review-form');
+  if (reviewForm) reviewForm.reset();
+};
 
-// this function is used to calculate the duration of the warranty
+const closeReviewModalBtn = document.getElementById('btn-close-review-modal');
+if (closeReviewModalBtn) {
+  closeReviewModalBtn.addEventListener('click', () => {
+    const reviewModal = document.getElementById('dashboard-review-modal');
+    if (!reviewModal) return;
+    reviewModal.classList.add('opacity-0');
+    reviewModal.firstElementChild.classList.add('scale-95');
+    setTimeout(() => reviewModal.classList.add('hidden'), 300);
+  });
+}
+
+const starButtons = document.querySelectorAll('.dash-star-select');
+let selectedRating = 5;
+starButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    selectedRating = parseInt(btn.getAttribute('data-val'));
+    starButtons.forEach(s => {
+      const val = parseInt(s.getAttribute('data-val'));
+      s.className = val <= selectedRating ? "dash-star-select text-neonGold transition" : "dash-star-select text-gray-600 hover:text-neonGold transition";
+    });
+  });
+});
+
+const reviewForm = document.getElementById('dashboard-review-form');
+if (reviewForm) {
+  reviewForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const submitBtn = document.getElementById('btn-dashboard-submit-review');
+    const originalText = submitBtn.innerText;
+    
+    const bookingId = document.getElementById('modal-rev-booking-id').value;
+    const device = document.getElementById('modal-rev-device').value;
+    const service = document.getElementById('modal-rev-service').value;
+    const content = document.getElementById('modal-rev-content').value.trim();
+
+    submitBtn.innerText = 'BROADCASTING_LOG...';
+    submitBtn.disabled = true;
+
+    try {
+      const response = await fetch(`${window.CONFIG.API_BASE_URL}/api/reviews`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          bookingId: bookingId,
+          customerName: localStorage.getItem('userName') || 'Verified Pro Member',
+          device: device,
+          service: service,
+          rating: selectedRating,
+          content: content
+        })
+      });
+
+     if (response.ok) {
+        alert('Review logs compiled and committed successfully.');
+        
+        // 1. Smoothly slide down and close the active overlay frame
+        const reviewModal = document.getElementById('dashboard-review-modal');
+        if (reviewModal) {
+          reviewModal.classList.add('opacity-0');
+          reviewModal.firstElementChild.classList.add('scale-95');
+        }
+        
+        // 2. Direct pipeline redirection straight into the global testimonials hub page
+        setTimeout(() => {
+          window.location.href = 'reviews.html';
+        }, 300);
+      } else {
+        const errData = await response.json();
+        alert(`CRITICAL REJECTION: ${errData.message}`);
+        submitBtn.innerText = originalText;
+        submitBtn.disabled = false;
+      }
+    } catch (error) {
+      console.error(error);
+      alert('CONNECTION FAILURE: MAIN FRAME SYSTEM UNREACHABLE.');
+      submitBtn.innerText = originalText;
+      submitBtn.disabled = false;
+    }
+  });
+}
+
 function calculateWarranty(dateStr, status) {
-  // This info will also display in the card's content
   if (status !== 'Completed')
     return { isValid: false, text: 'PENDING', expiry: 'Starts after repair' }
 
@@ -119,7 +221,6 @@ function calculateWarranty(dateStr, status) {
   const expiryDate = new Date(repairDate)
   expiryDate.setMonth(repairDate.getMonth() + 3)
 
-  // calculate the time left
   const today = new Date()
   const diffTime = expiryDate - today
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
@@ -139,7 +240,6 @@ function calculateWarranty(dateStr, status) {
   }
 }
 
-// this function is used to get the status of the progress
 function getStatusProgress(status) {
   const steps = {
     Pending: 20,
@@ -151,7 +251,6 @@ function getStatusProgress(status) {
   return steps[status] || 0
 }
 
-// for different status the style will be different
 function getStatusStyle(status) {
   const styles = {
     Pending: 'bg-gray-800 text-gray-400',

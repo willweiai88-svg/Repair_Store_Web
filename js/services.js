@@ -133,6 +133,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.selectService = function (itemId) {
     const item = database.find((d) => d._id === itemId)
+    if (!item || !item.brand || !item.model || !item.service) {
+        alert('SECURITY ERROR: Attempted initialization of corrupted payload item node.');
+        return;
+    }
+    
     state.serviceObj = item
     state.step = 5
 
@@ -156,14 +161,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="absolute top-0 right-0 w-40 h-40 bg-neonGold/10 rounded-bl-full blur-3xl -z-10"></div>
                     <p class="text-neonGold font-bold mb-2 tracking-widest uppercase text-sm">Pro Member Estimate</p>
                     <p class="text-6xl md:text-7xl font-black text-white glow-gold mb-8">$${item.memberPrice}</p>
-                    <a href="booking.html?service_id=${item._id}" class="w-full bg-neonBlue text-black font-bold py-4 rounded-xl hover:bg-white transition shadow-[0_0_20px_rgba(0,243,255,0.4)] text-lg uppercase tracking-wide">
+                    
+                    <!-- Added onclick gate controller routing validator instead of direct vulnerable href anchor -->
+                    <button onclick="window.dispatchSecureBookingGateway('${item._id}')" class="w-full bg-neonBlue text-black font-bold py-4 rounded-xl hover:bg-white transition shadow-[0_0_20px_rgba(0,243,255,0.4)] text-lg uppercase tracking-wide">
                         Book This Price
-                    </a>
+                    </button>
                 </div>
             </div>
         `
     updateUI(5)
   }
+
+  // Encapsulated router pipeline verification controller
+  window.dispatchSecureBookingGateway = function (serviceId) {
+      if (!serviceId || serviceId.trim() === '' || serviceId.includes('<')) {
+          alert('SECURITY WARNING: Unsafe payload serialization sequence blocked.');
+          return;
+      }
+      window.location.href = `booking.html?service_id=${encodeURIComponent(serviceId)}`;
+  };
 
   window.goBack = function () {
     if (state.step > 1) {

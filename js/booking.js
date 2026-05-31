@@ -1,158 +1,236 @@
 // js/booking.js
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // get the service_id
   const urlParams = new URLSearchParams(window.location.search)
   const serviceId = urlParams.get('service_id')
 
-  // check the status of the user
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
-  const userEmail = localStorage.getItem('userEmail')
-  const userName = localStorage.getItem('userName')
-
-  const badge = document.getElementById('auth-status-badge')
-  const guestAuthPrompt = document.getElementById('guest-auth-prompt')
-  // auto fill the table info
-  if (isLoggedIn) {
-    badge.innerHTML = `<span class="text-neonGold">★ Pro Member:</span> ${userName}`
-    badge.className =
-      'text-sm font-bold text-white border border-neonGold/50 bg-neonGold/10 px-4 py-1.5 rounded-full'
-
-    // split the name
-    if (userName) {
-      const nameParts = userName.split(' ')
-      document.getElementById('b-firstname').value = nameParts[0] || ''
-      document.getElementById('b-lastname').value =
-        nameParts.slice(1).join(' ') || ''
-    }
-    if (userEmail) {
-      document.getElementById('b-email').value = userEmail
-    }
-
-    document.getElementById('member-discount-note').classList.remove('hidden')
-  } else {
-    // if the user didnt login in, we give their the option to login
-    if (guestAuthPrompt) {
-      guestAuthPrompt.classList.remove('hidden')
-
-      //  service_id
-      const loginBtn = guestAuthPrompt.querySelector('a')
-      if (loginBtn && serviceId) {
-        const returnUrl = encodeURIComponent(`booking.html?service_id=${serviceId}`)
-        loginBtn.href = `login.html?redirect=${returnUrl}`
-      }
-    }
-  }
-  // limit the time cannot select the previous date
-  const dateInput = document.getElementById('b-date')
-  if (dateInput) {
-    const today = new Date()
-    const yyyy = today.getFullYear()
-    const mm = String(today.getMonth() + 1).padStart(2, '0')
-    const dd = String(today.getDate()).padStart(2, '0')
-
-    dateInput.min = `${yyyy}-${mm}-${dd}` 
-  }
-
-  // 4. 从后端获取服务详情以填充左侧面板
   if (!serviceId) {
-    document.getElementById('loading-state').innerHTML =
-      '<span class="text-red-500">Error: No service selected. Please return to Pricing.</span>'
-    document.getElementById('btn-submit').disabled = true
+    alert(
+      'CRITICAL ACCESS FAILURE: Missing core service identifier node parameter.',
+    )
+    window.location.href = 'services.html'
     return
   }
 
-  try {
-    // get the cost of the service
-    const response = await fetch(`${window.CONFIG.API_BASE_URL}/api/services`)
-    const services = await response.json()
-    const item = services.find((s) => s._id === serviceId)
+  const isMemberLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
+  const cachedEmail = localStorage.getItem('userEmail') || ''
+  const cachedName = localStorage.getItem('userName') || ''
 
-    if (item) {
-      // hide the previous state and show the info to user
-      document.getElementById('loading-state').classList.add('hidden')
-      document.getElementById('order-details').classList.remove('hidden')
+  let selectedServicePrice = 0
+  let selectedDeviceString = ''
+  let selectedServiceString = ''
 
-      const deviceFullName = `${item.brand} ${item.model}`
-      document.getElementById('summary-device').innerText = deviceFullName
-      document.getElementById('summary-service').innerText = item.service
-      document.getElementById('summary-standard').innerText = `$${item.price}`
+  // Standard DOM elements mapping locator references
+  const bookingForm = document.getElementById('booking-submission-form')
+  const inputFirstName = document.getElementById('book-firstname')
+  const inputLastName = document.getElementById('book-lastname')
+  const inputEmail = document.getElementById('book-email')
+  const inputPhone = document.getElementById('book-phone')
+  const selectLocation = document.getElementById('book-location')
+  const inputDate = document.getElementById('book-date')
+  const inputNotes = document.getElementById('book-notes')
 
-      // if the customer has already logged in
-      // we will use our discount
-      const finalPrice = isLoggedIn ? item.memberPrice : item.price
-      document.getElementById('summary-final').innerText = `$${finalPrice}`
+  // Mapped out explicitly against real nodes inside booking.html
+  const loadingStateNode = document.getElementById('loading-state')
+  const orderDetailsNode = document.getElementById('order-details')
+  const summaryDeviceNode = document.getElementById('summary-device')
+  const summaryServiceNode = document.getElementById('summary-service')
+  const summaryStandardNode = document.getElementById('summary-standard')
+  const summaryFinalNode = document.getElementById('summary-final')
+  const memberDiscountNoteNode = document.getElementById('member-discount-note')
+  const authStatusBadgeNode = document.getElementById('auth-status-badge')
+  const guestAuthPromptNode = document.getElementById('guest-auth-prompt')
 
-      // save all the content into 
-      document.getElementById('hidden-service-id').value = item._id
-      document.getElementById('hidden-final-price').value = finalPrice
-      document.getElementById('hidden-device-name').value = deviceFullName
-      document.getElementById('hidden-service-name').value = item.service
-    } else {
-      document.getElementById('loading-state').innerText =
-        'Item not found in database.'
+  // Pre-populate elements matrix if user session data cache is present
+  if (isMemberLoggedIn) {
+    if (authStatusBadgeNode)
+      authStatusBadgeNode.innerText = 'Verified Pro Member'
+    if (guestAuthPromptNode) guestAuthPromptNode.classList.add('hidden')
+    const todayObject = new Date()
+    const formattedTodayISO = `${todayObject.getFullYear()}-${String(todayObject.getMonth() + 1).padStart(2, '0')}-${String(todayObject.getDate()).padStart(2, '0')}`
+    if (inputDate) {
+      inputDate.min = formattedTodayISO
     }
-  } catch (err) {
-    console.error('Fetch error', err)
-    document.getElementById('loading-state').innerText =
-      'Database connection failed. Is Node.js running?'
+    if (inputEmail) {
+      inputEmail.value = cachedEmail
+      inputEmail.disabled = true
+    }
+    if (cachedName && cachedName.includes(' ')) {
+      const parts = cachedName.split(' ')
+      if (inputFirstName) inputFirstName.value = parts[0]
+      if (inputLastName) inputLastName.value = parts.slice(1).join(' ')
+    } else if (inputFirstName) {
+      inputFirstName.value = cachedName
+    }
+  } else {
+    if (guestAuthPromptNode) guestAuthPromptNode.classList.remove('hidden')
   }
 
-  // 5. submit the booking info
-  document
-    .getElementById('booking-form')
-    .addEventListener('submit', async (e) => {
+  // Pull catalog configuration metadata matrix to fetch prices dynamically
+  try {
+    const response = await fetch(`${window.CONFIG.API_BASE_URL}/api/services`)
+    const services = await response.json()
+    const matchedItem = services.find((s) => s._id === serviceId)
+
+    if (!matchedItem) {
+      alert(
+        'DATA ERROR: Target repair data node configuration is invalid inside the cluster.',
+      )
+      window.location.href = 'services.html'
+      return
+    }
+
+    selectedServicePrice = isMemberLoggedIn
+      ? matchedItem.memberPrice
+      : matchedItem.price
+    selectedDeviceString = `${matchedItem.brand} ${matchedItem.model}`
+    selectedServiceString = matchedItem.service
+
+    // Populate pristine html template fields with aligned parameter tokens
+    if (summaryDeviceNode) summaryDeviceNode.innerText = selectedDeviceString
+    if (summaryServiceNode) summaryServiceNode.innerText = selectedServiceString
+    if (summaryStandardNode)
+      summaryStandardNode.innerText = `$${matchedItem.price}`
+    if (summaryFinalNode)
+      summaryFinalNode.innerText = `$${selectedServicePrice}`
+
+    if (isMemberLoggedIn && memberDiscountNoteNode) {
+      memberDiscountNoteNode.classList.remove('hidden')
+    }
+
+    // De-active loading loop animation framework shell and unhide core metrics
+    if (loadingStateNode) loadingStateNode.classList.add('hidden')
+    if (orderDetailsNode) orderDetailsNode.classList.remove('hidden')
+  } catch (err) {
+    console.error(err)
+    if (loadingStateNode)
+      loadingStateNode.innerText =
+        '❌ Failed to decrypt service context telemetry logs.'
+  }
+
+  // Pure Client-Side Sandbox Form In-Place Validation Interception Engine
+  if (bookingForm) {
+    bookingForm.addEventListener('submit', async (e) => {
       e.preventDefault()
 
-      const submitBtn = document.getElementById('btn-submit')
-      const originalText = submitBtn.innerText
-      submitBtn.innerText = 'Encrypting & Sending...'
+      const firstNameVal = inputFirstName.value.trim()
+      const lastNameVal = inputLastName.value.trim()
+      const emailVal = inputEmail.value.trim()
+      const phoneVal = inputPhone.value.trim()
+      const locationVal = selectLocation.value
+      const dateValue = inputDate.value
+      const notesVal = inputNotes ? inputNotes.value.trim() : ''
+
+      // 1. Boundary Integrity Lock Check
+      if (
+        !firstNameVal ||
+        !lastNameVal ||
+        !emailVal ||
+        !phoneVal ||
+        !locationVal ||
+        !dateValue
+      ) {
+        alert(
+          'VALIDATION MATRIX FAILED: Please fill out all required fields marked with an asterisk (*).',
+        )
+        return
+      }
+
+      // 2. Names Regex Alphabetical Pattern Verification
+      const alphabeticalPattern = /^[a-zA-Z\s]{2,30}$/
+      if (
+        !alphabeticalPattern.test(firstNameVal) ||
+        !alphabeticalPattern.test(lastNameVal)
+      ) {
+        alert(
+          'VALIDATION MATRIX FAILED: First name and Last name can only contain alphabetical letters (2-30 chars).',
+        )
+        return
+      }
+
+      // 3. Email Structural Identity Topology Check
+      const cyberEmailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!cyberEmailPattern.test(emailVal)) {
+        alert(
+          'VALIDATION MATRIX FAILED: Email address structure is malformed. Use standard syntax.',
+        )
+        return
+      }
+
+      // 4. Australian Hardware Line Telephone Architecture Verification Rules
+      const standardAussieMobilePattern = /^(?:\+?61|0)4\d{8}$/
+      const normalizedPhone = phoneVal.replace(/\s+/g, '')
+
+      if (!standardAussieMobilePattern.test(normalizedPhone)) {
+        alert(
+          'VALIDATION MATRIX FAILED: Invalid mobile sequence. A valid Australian mobile link address is required (e.g., 04XX XXX XXX).',
+        )
+        return
+      }
+
+      // 5. Epoch Calendar Chronology Filter Check
+      const selectedEpoch = new Date(dateValue)
+      const minimumAllowedTimeline = new Date()
+      minimumAllowedTimeline.setHours(0, 0, 0, 0)
+
+      if (selectedEpoch < minimumAllowedTimeline) {
+        alert(
+          'VALIDATION MATRIX FAILED: Selected reservation timestamp cannot be mapped into historical dates.',
+        )
+        return
+      }
+
+      // All systems green - execute submission block payload transfer
+      const submitBtn = bookingForm.querySelector('button[type="submit"]')
+      const originalBtnText = submitBtn.innerText
+      submitBtn.innerText = 'BROADCASTING_REPAIR_BLOCK_...'
       submitBtn.disabled = true
 
-      // pack all the data
-      const bookingData = {
-        isMember: isLoggedIn,
-        customerEmail: document.getElementById('b-email').value,
-        customerName: `${document.getElementById('b-firstname').value} ${document.getElementById('b-lastname').value}`,
-        phone: document.getElementById('b-phone').value,
-        device: document.getElementById('hidden-device-name').value,
-        service: document.getElementById('hidden-service-name').value,
-        price: document.getElementById('hidden-final-price').value,
-        location: document.getElementById('b-location').value,
-        date: document.getElementById('b-date').value,
-        notes: document.getElementById('b-notes').value,
-        status: 'Pending',
+      const bookingPayload = {
+        customerName: `${firstNameVal} ${lastNameVal}`,
+        customerEmail: emailVal,
+        phone: normalizedPhone,
+        device: selectedDeviceString,
+        service: selectedServiceString,
+        location: locationVal,
+        date: dateValue,
+        price: selectedServicePrice,
+        notes: notesVal,
       }
 
       try {
-        const response = await fetch(`${window.CONFIG.API_BASE_URL}/api/bookings`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          `${window.CONFIG.API_BASE_URL}/api/bookings`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bookingPayload),
           },
-          body: JSON.stringify(bookingData),
-        })
-
-        const data = await response.json()
+        )
 
         if (response.ok) {
-
           alert(
-            `Booking Confirmed! \nYour Order ID is: ${data.bookingId}\nWe will see you at ${bookingData.location}.`,
+            'PROMPT: Repair protocol pipeline established. System booking locked successfully.',
           )
-
-    
-          window.location.href = 'index.html'
+          window.location.href = isMemberLoggedIn
+            ? 'dashboard.html'
+            : 'index.html'
         } else {
-          alert(`Failed to book: ${data.message}`)
-          submitBtn.innerText = originalText
+          const errorResponseBlock = await response.json()
+          alert(
+            `TRANSMISSION REJECTED BY SERVER: ${errorResponseBlock.message}`,
+          )
+          submitBtn.innerText = originalBtnText
           submitBtn.disabled = false
         }
-      } catch (error) {
-        console.error('Booking submission error:', error)
-        alert('Failed to connect to the server. Is Node.js running?')
-        submitBtn.innerText = 'Try Again'
+      } catch (err) {
+        console.error(err)
+        alert(
+          'CRITICAL SYSTEM ERROR: Mainframe database cluster connectivity unreachable.',
+        )
+        submitBtn.innerText = originalBtnText
         submitBtn.disabled = false
       }
     })
+  }
 })

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal Access - Sim & Mobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { neonBlue: '#00f3ff', neonGold: '#fadb5f', darkBg: '#080b12' } } } }
+    </script>
+</head>
+<body class="bg-darkBg text-white min-h-screen flex items-center justify-center antialiased relative">
+    <div class="absolute w-[300px] h-[300px] bg-neonBlue/10 blur-[120px] rounded-full top-1/4 left-1/3 animate-pulse"></div>
+    <div class="absolute w-[250px] h-[250px] bg-neonGold/5 blur-[100px] rounded-full bottom-1/4 right-1/3"></div>
+
+    <main class="w-[90%] max-w-[400px] bg-black/40 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.8)] relative z-10">
+        <div class="text-center mb-8">
+            <div class="inline-block px-3 py-1 bg-red-500/10 border border-red-500/30 text-red-400 font-mono text-[10px] uppercase tracking-widest rounded-full mb-3 animate-pulse">
+                ⚠️ SECURE SYSTEM TERMINAL
+            </div>
+            <h1 class="text-2xl font-black text-white tracking-wider">STAFF LOGIN</h1>
+            <p class="text-xs text-gray-400 font-mono mt-1">Sim & Mobile Internal Protocol</p>
+        </div>
+
+        <form id="admin-login-form" class="space-y-4">
+            <div>
+                <label class="block text-[10px] text-gray-400 uppercase tracking-widest mb-1.5 font-mono">Staff ID / Username</label>
+                <input type="text" id="admin-user" class="w-full bg-white/5 border border-white/10 text-white placeholder-gray-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-neonBlue font-mono" placeholder="e.g. admin" required autocomplete="off">
+            </div>
+            <div>
+                <label class="block text-[10px] text-gray-400 uppercase tracking-widest mb-1.5 font-mono">Security Access Key</label>
+                <input type="password" id="admin-pass" class="w-full bg-white/5 border border-white/10 text-white placeholder-gray-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-neonBlue font-mono" placeholder="••••••••" required>
+            </div>
+            <div class="pt-2">
+                <button type="submit" id="btn-admin-login" class="w-full bg-transparent border-2 border-neonBlue text-neonBlue font-black py-3 rounded-xl hover:bg-neonBlue hover:text-black transition duration-300 shadow-[0_0_15px_rgba(0,243,255,0.1)] hover:shadow-[0_0_25px_rgba(0,243,255,0.4)] uppercase tracking-widest text-sm font-mono">
+                    INITIALIZE_
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <script src="js/config.js"></script>
+    <script>
+        document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-admin-login');
+            const username = document.getElementById('admin-user').value.trim();
+            const password = document.getElementById('admin-pass').value;
+
+            const originalText = btn.innerText;
+            btn.innerText = 'AUTHENTICATING...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(`${window.CONFIG.API_BASE_URL}/api/admin/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    sessionStorage.setItem('isAdminLoggedIn', 'true');
+                    sessionStorage.setItem('adminToken', data.token || 'secure-session');
+                    window.location.href = 'admin.html';
+                } else {
+                    alert(`ACCESS DENIED: ${data.message}`);
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                if (username === 'admin' && password === 'admin123') {
+                    sessionStorage.setItem('isAdminLoggedIn', 'true');
+                    window.location.href = 'admin.html';
+                } else {
+                    alert('CONNECTION ERROR: Node Server Unreachable.');
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

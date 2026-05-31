@@ -1,234 +1,375 @@
-let allBookings = [];
-let allEnquiries = [];
-let currentFilter = 'All';
-let currentView = 'bookings'; // default will be bookings page
+// js/admin.js
 
-document.addEventListener('DOMContentLoaded', async () => {
-    await fetchBookings();
-});
+document.addEventListener('DOMContentLoaded', () => {
+  const isAdminLoggedIn = sessionStorage.getItem('isAdminLoggedIn') === 'true'
 
-// This function is used to fetch all bookings info
-async function fetchBookings() {
-    try {
-        const response = await fetch(`${window.CONFIG.API_BASE_URL}/api/admin/bookings`);
-        allBookings = await response.json();
-        if(currentView === 'bookings') renderTable();
-    } catch (err) {
-        console.error("Database connection failed", err);
+  if (!isAdminLoggedIn) {
+    window.location.href = 'admin-login.html'
+    return
+  }
+
+  const mainContent = document.getElementById('admin-main-content')
+  if (mainContent) {
+    mainContent.classList.remove('hidden')
+  }
+
+  const adminLogoutBtn = document.getElementById('btn-admin-logout')
+  const startDateInput = document.getElementById('admin-start-date')
+  const endDateInput = document.getElementById('admin-end-date')
+  const allTimeBtn = document.getElementById('btn-all-time')
+
+  let allBookings = []
+  let allEnquiries = []
+  let currentView = 'bookings'
+  let currentStore = 'All'
+
+  const todayStr = new Date().toLocaleDateString('en-CA')
+  if (startDateInput && endDateInput) {
+    startDateInput.value = todayStr
+    endDateInput.value = todayStr
+  }
+
+  initAdminPanel()
+
+  if (adminLogoutBtn) {
+    adminLogoutBtn.addEventListener('click', () => {
+      if (confirm('Disconnect from administrative mainframe terminal?')) {
+        // Clear all restricted credentials from session cache storage
+        sessionStorage.removeItem('isAdminLoggedIn')
+        sessionStorage.removeItem('adminToken')
+
+        // Redirect seamlessly back to the public frontline homepage
+        window.location.href = 'index.html'
+      }
+    })
+  }
+
+  function toggleDateHighlight() {
+    const startValue = startDateInput ? startDateInput.value : ''
+    const endValue = endDateInput ? endDateInput.value : ''
+
+    if (!startValue && !endValue) {
+      if (allTimeBtn) {
+        allTimeBtn.className =
+          'text-[10px] font-mono border px-2.5 py-1.5 rounded-xl transition-all duration-300 uppercase ml-2 border-neonBlue text-neonBlue bg-neonBlue/10 shadow-[0_0_10px_rgba(0,243,255,0.2)]'
+      }
+      if (startDateInput)
+        startDateInput.className =
+          'bg-[#080b12] border border-white/10 text-xs rounded-xl px-3 py-1.5 focus:outline-none focus:border-neonBlue text-white font-mono transition-all duration-300'
+      if (endDateInput)
+        endDateInput.className =
+          'bg-[#080b12] border border-white/10 text-xs rounded-xl px-3 py-1.5 focus:outline-none focus:border-neonBlue text-white font-mono transition-all duration-300'
+    } else {
+      if (allTimeBtn) {
+        allTimeBtn.className =
+          'text-[10px] font-mono border px-2.5 py-1.5 rounded-xl transition-all duration-300 uppercase ml-2 border-gray-700 text-gray-400'
+      }
+      if (startDateInput)
+        startDateInput.className =
+          'bg-[#080b12] border border-neonBlue text-xs rounded-xl px-3 py-1.5 focus:outline-none focus:border-neonBlue text-white font-mono transition-all duration-300 shadow-[0_0_10px_rgba(0,243,255,0.1)]'
+      if (endDateInput)
+        endDateInput.className =
+          'bg-[#080b12] border border-neonBlue text-xs rounded-xl px-3 py-1.5 focus:outline-none focus:border-neonBlue text-white font-mono transition-all duration-300 shadow-[0_0_10px_rgba(0,243,255,0.1)]'
     }
-}
+  }
 
-// This function is used to fetch all the enquiries
-async function fetchEnquiries() {
-    try {
-        const response = await fetch(`${window.CONFIG.API_BASE_URL}/api/admin/enquiries`);
-        allEnquiries = await response.json();
-        if(currentView === 'enquiries') renderEnquiriesTable();
-    } catch (err) {
-        console.error("Failed to fetch enquiries", err);
+  function onDateChange() {
+    toggleDateHighlight()
+    if (currentView === 'bookings') {
+      renderBookingsTable()
     }
-}
+  }
 
-// This function is used to switch the view between bookings or enquiries
-function switchView(view) {
-    currentView = view;
-    const tabBookings = document.getElementById('tab-bookings');
-    const tabEnquiries = document.getElementById('tab-enquiries');
-    const locationFilters = document.getElementById('location-filters-container');
+  if (startDateInput) startDateInput.addEventListener('change', onDateChange)
+  if (endDateInput) endDateInput.addEventListener('change', onDateChange)
+
+  function initAdminPanel() {
+    fetchBookingsData()
+    fetchEnquiriesData()
+  }
+
+  async function fetchBookingsData() {
+    try {
+      const response = await fetch(
+        `${window.CONFIG.API_BASE_URL}/api/admin/bookings`,
+      )
+      allBookings = await response.json()
+      toggleDateHighlight()
+      if (currentView === 'bookings') {
+        renderBookingsTable()
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  async function fetchEnquiriesData() {
+    try {
+      const response = await fetch(
+        `${window.CONFIG.API_BASE_URL}/api/admin/enquiries`,
+      )
+      allEnquiries = await response.json()
+      if (currentView === 'enquiries') {
+        renderEnquiriesTable()
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  function renderBookingsTable() {
+    const tableHead = document.getElementById('admin-table-head')
+    const tableBody = document.getElementById('admin-table-body')
+
+    const startValue = startDateInput ? startDateInput.value : ''
+    const endValue = endDateInput ? endDateInput.value : ''
+
+    if (!tableHead || !tableBody) return
+
+    tableHead.innerHTML = `
+      <tr>
+        <th class="px-6 py-5">Protocol ID</th>
+        <th class="px-6 py-5">Customer</th>
+        <th class="px-6 py-5">Device & Service</th>
+        <th class="px-6 py-5">Location</th>
+        <th class="px-6 py-5">Status Update</th>
+        <th class="px-6 py-5 text-right">Price</th>
+      </tr>
+    `
+
+    let filtered =
+      currentStore === 'All'
+        ? allBookings
+        : allBookings.filter((b) => b.location === currentStore)
+
+    if (startValue && endValue) {
+      filtered = filtered.filter(
+        (b) => b.date >= startValue && b.date <= endValue,
+      )
+    } else if (startValue) {
+      filtered = filtered.filter((b) => b.date >= startValue)
+    } else if (endValue) {
+      filtered = filtered.filter((b) => b.date <= endValue)
+    }
+
+    let activeCount = 0
+    let revenueSum = 0
+
+    tableBody.innerHTML = filtered
+      .map((booking) => {
+        if (booking.status !== 'Completed') activeCount++
+        if (booking.status === 'Completed')
+          revenueSum += parseFloat(booking.price || 0)
+
+        const bookingId = booking._id || booking.bookingId || 'N/A'
+        const shortId =
+          bookingId.length > 8
+            ? bookingId.substring(bookingId.length - 8).toUpperCase()
+            : bookingId
+
+        let displayDate = 'N/A'
+        if (booking.date) {
+          const dateParts = booking.date.split('-')
+          if (dateParts.length === 3) {
+            displayDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`
+          } else {
+            displayDate = booking.date
+          }
+        }
+
+        return `
+        <tr class="hover:bg-white/5 transition">
+          <td class="px-6 py-4">
+            <div class="font-mono text-xs text-neonBlue" title="${bookingId}">#${shortId}</div>
+            <div class="text-[10px] text-gray-400 font-mono mt-1 uppercase tracking-wider">${displayDate}</div>
+          </td>
+          <td class="px-6 py-4">
+            <div class="font-bold text-white">${booking.customerName || 'Guest'}</div>
+            <div class="text-xs text-gray-400 font-mono">${booking.customerEmail || ''}</div>
+            <div class="text-[11px] text-gray-500 font-mono">${booking.phone || ''}</div>
+          </td>
+          <td class="px-6 py-4">
+            <div class="text-sm font-bold text-white">${booking.device || 'Unknown Device'}</div>
+            <div class="text-xs text-neonGold font-mono uppercase tracking-wider">${booking.service || 'General Repair'}</div>
+          </td>
+          <td class="px-6 py-4 font-mono text-xs text-gray-300">${booking.location || 'Mail-In'}</td>
+          <td class="px-6 py-4">
+            <select onchange="window.updateBookingStatus('${bookingId}', this.value)" class="bg-[#080b12] border border-white/10 text-xs rounded-lg px-2 py-1.5 focus:outline-none focus:border-neonBlue text-white font-mono">
+              <option value="Pending" ${booking.status === 'Pending' ? 'selected' : ''}>PENDING</option>
+              <option value="Confirmed" ${booking.status === 'Confirmed' ? 'selected' : ''}>CONFIRMED</option>
+              <option value="Repairing" ${booking.status === 'Repairing' ? 'selected' : ''}>REPAIRING</option>
+              <option value="Testing" ${booking.status === 'Testing' ? 'selected' : ''}>TESTING</option>
+              <option value="Completed" ${booking.status === 'Completed' ? 'selected' : ''}>COMPLETED</option>
+            </select>
+          </td>
+          <td class="px-6 py-4 text-right font-black text-white italic">$${booking.price || '0'}</td>
+        </tr>
+      `
+      })
+      .join('')
+
+    document.getElementById('active-count').innerText = activeCount
+
+    const revenueLabel = document.querySelector('.border-l-neonGold p')
+    if (revenueLabel) {
+      revenueLabel.innerText =
+        startValue || endValue ? 'Selected Revenue' : 'Total Revenue'
+    }
+    document.getElementById('revenue-count').innerText = `$${revenueSum}`
+  }
+
+  function renderEnquiriesTable() {
+    const tableHead = document.getElementById('admin-table-head')
+    const tableBody = document.getElementById('admin-table-body')
+    if (!tableHead || !tableBody) return
+
+    tableHead.innerHTML = `
+      <tr>
+        <th class="px-6 py-5">Received</th>
+        <th class="px-6 py-5">Contact Details</th>
+        <th class="px-6 py-5">Requested Service</th>
+        <th class="px-6 py-5">Issue Description</th>
+        <th class="px-6 py-5 text-right">Actions</th>
+      </tr>
+    `
+
+    tableBody.innerHTML = allEnquiries
+      .map((enq) => {
+        const name =
+          `${enq.firstName || ''} ${enq.lastName || ''}`.trim() || 'Anonymous'
+        return `
+        <tr class="hover:bg-white/5 transition text-sm">
+          <td class="px-6 py-4 text-xs font-mono text-gray-400">Node_Enq</td>
+          <td class="px-6 py-4">
+            <div class="font-bold text-white">${name}</div>
+            <div class="text-xs text-neonBlue font-mono">${enq.email || ''}</div>
+            <div class="text-[11px] text-gray-500 font-mono">${enq.phone || ''}</div>
+          </td>
+          <td class="px-6 py-4 font-mono">
+            <div class="text-white font-bold">${enq.model || 'Unknown Model'}</div>
+            <div class="text-xs text-neonGold uppercase">${enq.service || 'Other'}</div>
+          </td>
+          <td class="px-6 py-4 text-xs text-gray-300 max-w-xs break-words">${enq.description || 'No notes provided.'}</td>
+          <td class="px-6 py-4 text-right">
+            <button onclick="window.dismissEnquiry('${enq._id}')" class="text-xs border border-red-500/30 px-3 py-1.5 rounded-xl text-red-400 hover:bg-red-500/10 transition font-mono">DISMISS</button>
+          </td>
+        </tr>
+      `
+      })
+      .join('')
+  }
+
+  window.clearDateFilter = function () {
+    if (startDateInput) startDateInput.value = ''
+    if (endDateInput) endDateInput.value = ''
+    toggleDateHighlight()
+    if (currentView === 'bookings') {
+      renderBookingsTable()
+    }
+  }
+
+  window.updateBookingStatus = async function (bookingId, newStatus) {
+    try {
+      const response = await fetch(
+        `${window.CONFIG.API_BASE_URL}/api/admin/bookings/${bookingId}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: newStatus }),
+        },
+      )
+
+      if (response.ok) {
+        allBookings = allBookings.map((b) =>
+          b._id === bookingId || b.bookingId === bookingId
+            ? { ...b, status: newStatus }
+            : b,
+        )
+        renderBookingsTable()
+      } else {
+        alert('Status sync failed.')
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  window.dismissEnquiry = async function (enquiryId) {
+    if (!confirm('Resolve and clear this enquiry?')) return
+    try {
+      const response = await fetch(
+        `${window.CONFIG.API_BASE_URL}/api/admin/enquiries/${enquiryId}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'resolved' }),
+        },
+      )
+
+      if (response.ok) {
+        allEnquiries = allEnquiries.filter((e) => e._id !== enquiryId)
+        renderEnquiriesTable()
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  window.switchView = function (view) {
+    currentView = view
+    const tabBookings = document.getElementById('tab-bookings')
+    const tabEnquiries = document.getElementById('tab-enquiries')
+    const title = document.getElementById('current-store-title')
+    const filters = document.getElementById('location-filters-container')
+    const dateFilterArea = startDateInput ? startDateInput.parentElement : null
 
     if (view === 'bookings') {
-        tabBookings.className = "w-full text-left px-4 py-3 rounded-xl transition text-sm bg-white/10 text-neonBlue font-bold";
-        tabEnquiries.className = "w-full text-left px-4 py-3 rounded-xl transition text-sm text-gray-400 hover:text-white";
-        locationFilters.style.display = 'block'; // we will let admin to change to different store
-        document.getElementById('current-store-title').innerHTML = `${currentFilter} <span class="text-neonBlue">Protocols</span>`;
-        fetchBookings(); // we need to fetch the data again
+      tabBookings.className =
+        'w-full text-left px-4 py-3 rounded-xl transition text-sm bg-white/10 text-neonBlue font-bold'
+      tabEnquiries.className =
+        'w-full text-left px-4 py-3 rounded-xl transition text-sm text-gray-400 hover:text-white'
+      if (title)
+        title.innerHTML = `${currentStore} <span class="text-neonBlue">Protocols</span>`
+      if (filters) filters.classList.remove('hidden')
+      if (dateFilterArea) dateFilterArea.classList.remove('hidden')
+      renderBookingsTable()
     } else {
-        tabEnquiries.className = "w-full text-left px-4 py-3 rounded-xl transition text-sm bg-white/10 text-neonGold font-bold";
-        tabBookings.className = "w-full text-left px-4 py-3 rounded-xl transition text-sm text-gray-400 hover:text-white";
-        locationFilters.style.display = 'none'; 
-        document.getElementById('current-store-title').innerHTML = `Customer <span class="text-neonGold">Enquiries</span>`;
-        fetchEnquiries();
+      tabEnquiries.className =
+        'w-full text-left px-4 py-3 rounded-xl transition text-sm bg-white/10 text-neonBlue font-bold'
+      tabBookings.className =
+        'w-full text-left px-4 py-3 rounded-xl transition text-sm text-gray-400 hover:text-white'
+      if (title)
+        title.innerHTML = `Customer <span class="text-neonBlue">Enquiries</span>`
+      if (filters) filters.classList.add('hidden')
+      if (dateFilterArea) dateFilterArea.classList.add('hidden')
+      renderEnquiriesTable()
     }
-}
+  }
 
-// this function is used to render the booking table
-function renderTable() {
-    const thead = document.getElementById('admin-table-head');
-    thead.innerHTML = `
-        <tr>
-            <th class="px-6 py-5">Protocol ID</th>
-            <th class="px-6 py-5">Customer</th>
-            <th class="px-6 py-5">Device & Service</th>
-            <th class="px-6 py-5">Location</th>
-            <th class="px-6 py-5">Status Update</th>
-            <th class="px-6 py-5 text-right">Price</th>
-        </tr>
-    `;
-
-    const tbody = document.getElementById('admin-table-body');
-    const filtered = currentFilter === 'All' 
-        ? allBookings 
-        : allBookings.filter(b => b.location === currentFilter);
-
-    tbody.innerHTML = '';
-    let activeTasks = 0;
-    let totalRevenue = 0;
-
-    filtered.forEach(order => {
-        if (order.status !== 'Completed' && order.status !== 'Cancelled') activeTasks++;
-        if (order.status === 'Completed') totalRevenue += order.price;
-
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-white/[0.02] transition-colors group";
-        tr.innerHTML = `
-            <td class="px-6 py-4 font-mono text-[10px] text-gray-400">${order._id.substring(0, 8)}...</td>
-            <td class="px-6 py-4">
-                <p class="font-bold text-sm text-white">${order.customerName}</p>
-                <p class="text-[10px] text-gray-400">${order.phone}</p>
-            </td>
-            <td class="px-6 py-4">
-                <p class="text-xs text-white">${order.device}</p>
-                <p class="text-[10px] text-neonBlue uppercase">${order.service}</p>
-            </td>
-            <td class="px-6 py-4 text-xs text-gray-400">${order.location}</td>
-            <td class="px-6 py-4">
-                <select aria-label="Update Protocol Status" onchange="updateStatus('${order._id}', this.value)" class="status-select status-${order.status ? order.status.toLowerCase() : ''}">
-                    <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
-                    <option value="Confirmed" ${order.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
-                    <option value="Repairing" ${order.status === 'Repairing' ? 'selected' : ''}>Repairing</option>
-                    <option value="Testing" ${order.status === 'Testing' ? 'selected' : ''}>Testing</option>
-                    <option value="Completed" ${order.status === 'Completed' ? 'selected' : ''}>Completed</option>
-                    <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-                </select>
-            </td>
-            <td class="px-6 py-4 text-right font-bold text-neonGold">$${order.price}</td>
-        `;
-        tbody.appendChild(tr);
-    });
-
-    document.getElementById('active-count').innerText = activeTasks;
-    document.getElementById('revenue-count').innerText = `$${totalRevenue}`;
-}
-
-// render the enquries table
-function renderEnquiriesTable() {
-    const thead = document.getElementById('admin-table-head');
-    thead.innerHTML = `
-        <tr>
-            <th class="px-6 py-5">Date</th>
-            <th class="px-6 py-5">Customer Info</th>
-            <th class="px-6 py-5">Device Issue</th>
-            <th class="px-6 py-5 w-1/3">Description</th>
-            <th class="px-6 py-5 text-right">Status Update</th>
-        </tr>
-    `;
-
-    const tbody = document.getElementById('admin-table-body');
-    tbody.innerHTML = '';
-    
-    // sort the enquiries based on the time
-    allEnquiries.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-    // update the stat dashboard
-    const newLeadsCount = allEnquiries.filter(e => e.status === 'New').length;
-    document.getElementById('active-count').innerText = newLeadsCount + ' New';
-    document.getElementById('revenue-count').innerText = allEnquiries.length + ' Total';
-
-    allEnquiries.forEach(enq => {
-        // formate the time of the enquiry
-        const dateObj = new Date(enq.createdAt);
-        const dateStr = dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-white/[0.02] transition-colors group";
-        
-        // if this one is new we will add the border to that
-        if(enq.status === 'New' || !enq.status) {
-            tr.classList.add('border-l-2', 'border-neonBlue');
-        }
-
-        tr.innerHTML = `
-            <td class="px-6 py-4 font-mono text-xs text-gray-400">${dateStr}</td>
-            <td class="px-6 py-4">
-                <p class="font-bold text-sm text-white">${enq.firstName} ${enq.lastName}</p>
-                <p class="text-[10px] text-gray-400 select-all">${enq.email}</p>
-                <p class="text-[10px] text-gray-400 select-all">${enq.phone}</p>
-            </td>
-            <td class="px-6 py-4">
-                <p class="text-xs text-white">${enq.model}</p>
-                <span class="inline-block px-2 py-1 bg-neonGold/10 text-neonGold text-[10px] rounded mt-1 uppercase">${enq.service}</span>
-            </td>
-            <td class="px-6 py-4 text-xs text-gray-400 break-words">${enq.description}</td>
-            <td class="px-6 py-4 text-right">
-                <select aria-label="Update Enquiry Status" onchange="updateEnquiryStatus('${enq._id}', this.value)" 
-                        class="bg-[#0b0f19] border border-white/20 text-white rounded-lg px-3 py-1.5 text-xs outline-none focus:border-neonGold transition cursor-pointer">
-                    <option value="New" ${enq.status === 'New' || !enq.status ? 'selected' : ''}>🔵 New</option>
-                    <option value="Contacted" ${enq.status === 'Contacted' ? 'selected' : ''}>🟡 Contacted</option>
-                    <option value="Quoted" ${enq.status === 'Quoted' ? 'selected' : ''}>🟣 Quoted</option>
-                    <option value="Converted" ${enq.status === 'Converted' ? 'selected' : ''}>🟢 Converted</option>
-                    <option value="Closed" ${enq.status === 'Closed' ? 'selected' : ''}>⚪ Closed</option>
-                </select>
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-// update the details / status of the enquiry
-async function updateEnquiryStatus(enquiryId, newStatus) {
-    try {
-        const response = await fetch(`${window.CONFIG.API_BASE_URL}/api/admin/enquiries/${enquiryId}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status: newStatus })
-        });
-
-        if (response.ok) {
-            // update the current status
-            const index = allEnquiries.findIndex(e => e._id === enquiryId);
-            if (index !== -1) {
-                allEnquiries[index].status = newStatus;
-            }
-            // we need to render the table again
-            renderEnquiriesTable();
-        } else {
-            alert("Failed to update enquiry status.");
-        }
-    } catch (err) {
-        console.error(err);
-        alert("Network error.");
+  window.changeStore = function (storeName) {
+    currentStore = storeName
+    const title = document.getElementById('current-store-title')
+    if (title) {
+      title.innerHTML = `${storeName} <span class="text-neonBlue">Protocols</span>`
     }
-}
-// the function used to filter the store
-function changeStore(store) {
-    if(currentView !== 'bookings') return;
-    currentFilter = store;
-    document.getElementById('current-store-title').innerHTML = `${store === 'All' ? 'All' : store} <span class="text-neonBlue">Protocols</span>`;
-    
-    document.querySelectorAll('.store-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.innerText === store || (store === 'All' && btn.innerText === 'All Protocols')) {
-            btn.classList.add('active');
-        }
-    });
-    renderTable();
-}
 
-// update the status of the orders
-async function updateStatus(orderId, newStatus) {
-    try {
-        const response = await fetch(`${window.CONFIG.API_BASE_URL}/api/admin/bookings/${orderId}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status: newStatus })
-        });
+    const storeButtons = document.querySelectorAll('.store-btn')
+    storeButtons.forEach((btn) => {
+      const text = btn.innerText.trim()
+      if (
+        text.includes(storeName) ||
+        (storeName === 'All' && text.includes('All'))
+      ) {
+        btn.className =
+          'store-btn active w-full text-left px-4 py-3 rounded-xl transition text-sm text-neonBlue font-bold bg-white/10'
+      } else {
+        btn.className =
+          'store-btn w-full text-left px-4 py-3 rounded-xl transition text-sm text-gray-400 hover:text-white'
+      }
+    })
 
-        if (response.ok) {
-            const index = allBookings.findIndex(b => b._id === orderId);
-            allBookings[index].status = newStatus;
-            renderTable();
-        }
-    } catch (err) {
-        alert("Sync failed.");
+    if (currentView === 'bookings') {
+      renderBookingsTable()
     }
-}
+  }
+})

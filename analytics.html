@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Business Analytics Dashboard | Sim & Mobile</title>
+
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neonBlue: '#00f3ff',
+                        neonGold: '#fadb5f',
+                        darkBg: '#080b12',
+                    }
+                }
+            }
+        }
+    </script>
+        <link rel="stylesheet" href="css/admin-theme.css">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+
+    <body class="bg-darkBg text-white min-h-screen flex antialiased">
+
+        <div id="analytics-main-content"
+            class="hidden w-full flex min-h-screen">
+
+            <aside
+                class="w-64 border-r border-white/5 bg-black/20 backdrop-blur-xl p-6 flex flex-col fixed h-full">
+                <div class="mb-10">
+                    <h2
+                        class="text-xl font-black text-neonBlue italic tracking-tighter">SIM
+                        & MOBILE</h2>
+                    <p
+                        class="text-[10px] text-gray-400 uppercase tracking-widest">Analytics
+                        Mainframe</p>
+                </div>
+
+                <nav class="space-y-2 flex-grow">
+                    <p
+                        class="text-[10px] text-gray-400 uppercase font-bold mb-4 px-3">Mainframe
+                        Modules</p>
+                    <a href="admin.html"
+                        class="block w-full text-left px-4 py-3 rounded-xl transition text-sm text-gray-400 hover:text-white">
+                        ← Operational Panel
+                    </a>
+                    <div
+                        class="w-full text-left px-4 py-3 rounded-xl transition text-sm bg-white/10 text-neonBlue font-bold cursor-default">
+                        📊 Business Intelligence
+                    </div>
+                </nav>
+
+                <button id="btn-analytics-logout"
+                    class="mt-auto text-xs text-gray-400 hover:text-white transition">
+                    ← Exit Terminal
+                </button>
+            </aside>
+
+            <main class="flex-grow ml-64 p-8">
+                <header class="flex justify-between items-end mb-10">
+                    <div>
+                        <h1
+                            class="text-4xl font-black uppercase tracking-tighter">BI
+                            <span class="text-neonBlue">Analytics</span></h1>
+
+                        <div class="flex items-center gap-3 mt-4">
+                            <span
+                                class="text-gray-500 font-mono text-xs">Timeline
+                                Matrix:</span>
+
+                            <input type="date" id="analytics-start-date"
+                                class="bg-[#080b12] border border-white/10 text-xs rounded-xl px-3 py-1.5 focus:outline-none focus:border-neonBlue text-white font-mono transition-all duration-300"
+                                style="color-scheme: dark;">
+
+                            <span
+                                class="text-neonBlue font-mono text-xs">➔</span>
+
+                            <input type="date" id="analytics-end-date"
+                                class="bg-[#080b12] border border-white/10 text-xs rounded-xl px-3 py-1.5 focus:outline-none focus:border-neonBlue text-white font-mono transition-all duration-300"
+                                style="color-scheme: dark;">
+
+                            <button onclick="window.clearAnalyticsDateFilter()"
+                                id="btn-analytics-all-time"
+                                class="text-[10px] font-mono border px-2.5 py-1.5 rounded-xl transition-all duration-300 uppercase ml-2 border-gray-700 text-gray-400">
+                                All Time
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-6">
+                        <div
+                            class="glass-panel px-6 py-3 rounded-2xl border-l-2 border-neonBlue min-w-[140px]">
+                            <p
+                                class="text-[10px] text-gray-400 uppercase tracking-wider font-mono">Selected
+                                Revenue</p>
+                            <p id="ticker-gross-revenue"
+                                class="text-xl font-black text-white mt-0.5">$0</p>
+                        </div>
+                        <div
+                            class="glass-panel px-6 py-3 rounded-2xl border-l-2 border-neonGold min-w-[140px]">
+                            <p
+                                class="text-[10px] text-gray-400 uppercase tracking-wider font-mono">Data
+                                Bookings</p>
+                            <p id="ticker-total-bookings"
+                                class="text-xl font-black text-white mt-0.5">0</p>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                    <div
+                        class="glass-panel p-6 rounded-3xl border border-white/5 bg-black/10">
+                        <div class="mb-4">
+                            <h3
+                                class="text-sm font-bold font-mono text-white uppercase tracking-wider">01
+                                // Multi-Store Revenue Columns</h3>
+                            <p class="text-[10px] text-gray-500 font-mono">Gross
+                                diagnostic financial yield by location node.</p>
+                        </div>
+                        <div class="h-64 relative w-full">
+                            <canvas id="chart-store-revenue"></canvas>
+                        </div>
+                    </div>
+
+                    <div
+                        class="glass-panel p-6 rounded-3xl border border-white/5 bg-black/10">
+                        <div class="mb-4">
+                            <h3
+                                class="text-sm font-bold font-mono text-white uppercase tracking-wider">02
+                                // Service Category Array</h3>
+                            <p
+                                class="text-[10px] text-gray-500 font-mono">Distribution
+                                profiles of hardware and software
+                                procedures.</p>
+                        </div>
+                        <div class="h-64 relative w-full flex justify-center">
+                            <canvas id="chart-service-distribution"></canvas>
+                        </div>
+                    </div>
+
+                    <div
+                        class="glass-panel p-6 rounded-3xl border border-white/5 bg-black/10 lg:col-span-2 max-w-xl mx-auto w-full">
+                        <div class="mb-4 text-center">
+                            <h3
+                                class="text-sm font-bold font-mono text-white uppercase tracking-wider">03
+                                // Active Task Ratios Pipeline</h3>
+                            <p
+                                class="text-[10px] text-gray-500 font-mono">Proportional
+                                balance of incomplete protocols versus completed
+                                historical logs.</p>
+                        </div>
+                        <div class="h-56 relative w-full flex justify-center">
+                            <canvas id="chart-task-ratio"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+
+        </div>
+
+        <script src="js/config.js"></script>
+        <script src="js/analytics.js"></script>
+    </body>
+
+</html>
