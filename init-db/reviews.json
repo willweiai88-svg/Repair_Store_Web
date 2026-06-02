@@ -1,0 +1,194 @@
+[
+  {
+    "_id": {"$oid": "665a0000f1d2c34a5e6f5001"},
+    "bookingId": {"$oid": "6659f1b3f1d2c34a5e6f8001"},
+    "customerName": "Wei Wei",
+    "device": "Samsung Galaxy S26 Ultra",
+    "service": "Screen Replacement",
+    "rating": 5,
+    "content": "Flawless dynamic OLED screen replacement sequence executed. The glass integration layer is pristine, color profiling matches factory specs perfectly, and the ultra-sonic fingerprint sensor remains highly responsive. 10/10 tech work.",
+    "createdAt": {"$date": "2026-05-31T14:30:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "665a0000f1d2c34a5e6f5002"},
+    "bookingId": {"$oid": "6659f1b3f1d2c34a5e6f8002"},
+    "customerName": "Wei Wei",
+    "device": "Apple iPhone 17 Pro Max",
+    "service": "Battery Replacement",
+    "rating": 5,
+    "content": "Outstanding service turnaround matrix! The diagnostic process was fully transparent, and the new battery cell performs perfectly at maximum output load calibration. Appreciate the member discount rates.",
+    "createdAt": {"$date": "2026-05-29T16:00:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "665a0000f1d2c34a5e6f5003"},
+    "bookingId": {"$oid": "6659f1b3f1d2c34a5e6f8005"},
+    "customerName": "Wei Wei",
+    "device": "Samsung Galaxy S24",
+    "service": "Screen Replacement",
+    "rating": 5,
+    "content": "Excellent diagnostics at the Kingsford node. The modular display logic alignment was fixed in under 45 minutes. Super transparent service flow and smooth transaction logging on the dashboard.",
+    "createdAt": {"$date": "2026-05-15T13:10:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "665a0000f1d2c34a5e6f5004"},
+    "bookingId": {"$oid": "6659f1b3f1d2c34a5e6f8006"},
+    "customerName": "John Doe",
+    "device": "Apple MacBook Pro 14",
+    "service": "Battery Replacement",
+    "rating": 4,
+    "content": "Solid thermal and power performance restoration. The MacBook's power cycle array is completely stabilized now. Only deducting one star because the store queue was a bit saturated during drop-off.",
+    "createdAt": {"$date": "2026-05-28T18:20:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "665a0000f1d2c34a5e6f5005"},
+    "bookingId": {"$oid": "6659f1b3f1d2c34a5e6f8008"},
+    "customerName": "David Miller",
+    "device": "Apple iPhone 16 Pro",
+    "service": "Back Glass Repair",
+    "location": "Mascot",
+    "rating": 5,
+    "content": "Laser separation tech used for the rear housing repair left the mainframe looking brand new. Absolute top-tier engineering precision. Will definitely route all future hardware faults here.",
+    "createdAt": {"$date": "2026-05-24T15:45:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "665a0000f1d2c34a5e6f5006"},
+    "bookingId": {"$oid": "6659f1b3f1d2c34a5e6f8010"},
+    "customerName": "James Cook",
+    "device": "Huawei Mate 80 Pro Max",
+    "service": "Motherboard Repair",
+    "rating": 5,
+    "content": "Micro-soldering on the primary logic board trace array was performed flawlessly. Other shops declared the device completely bricked, but the technicians here resuscitated the architecture layout perfectly.",
+    "createdAt": {"$date": "2026-05-19T10:05:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "665a0000f1d2c34a5e6f5007"},
+    "bookingId": {"$oid": "6659f1b3f1d2c34a5e6f8011"},
+    "customerName": "Tom Hancock",
+    "device": "Samsung Galaxy S24",
+    "service": "Battery Replacement",
+    "rating": 4,
+    "content": "The power supply diagnostics loop was accurate. Charging profiles are optimal again, and device thermal levels are much lower under intensive processing loads. Good clean lab execution.",
+    "createdAt": {"$date": "2026-05-12T16:50:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "665a0000f1d2c34a5e6f5008"},
+    "bookingId": {"$oid": "6659f1b3f1d2c34a5e6f8012"},
+    "customerName": "Lisa Taylor",
+    "device": "Apple iPhone 17 Pro Max",
+    "service": "Screen Replacement",
+    "rating": 5,
+    "content": "Pristine display calibration matrix! TrueTone telemetry parameters successfully transferred via serial rewrite protocols. Absolute wizards operating at the Mascot terminal station.",
+    "createdAt": {"$date": "2026-04-28T12:00:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "665a0000f1d2c34a5e6f5009"},
+    "bookingId": {"$oid": "6659f1b3f1d2c34a5e6f8013"},
+    "customerName": "Michael Scott",
+    "device": "Samsung Galaxy S23 Ultra",
+    "service": "Water Damage Repair",
+    "rating": 5,
+    "content": "My phone fell straight into a liquid matrix. The diagnostic extraction, ultrasonic cleaner treatment, and power rail repair rescued all my local filesystem block logs. Incredible emergency data recovery sequence!",
+    "createdAt": {"$date": "2026-04-20T14:22:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "665a0000f1d2c34a5e6f5010"},
+    "bookingId": {"$oid": "6659f1b3f1d2c34a5e6f8014"},
+    "customerName": "Bruce Wayne",
+    "device": "Apple MacBook Pro 14",
+    "service": "Motherboard Repair",
+    "rating": 5,
+    "content": "High-frequency logic gate capacitors swapped out efficiently. The computational terminal is fully responsive and structural data integrity remains completely intact. Highly reliable corporate grade tech repair.",
+    "createdAt": {"$date": "2026-04-16T11:00:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "665a0000f1d2c34a5e6f5011"},
+    "bookingId": {"$oid": "6659f1b3f1d2c34a5e6f8015"},
+    "customerName": "Clark Kent",
+    "device": "Google Pixel 9 Pro XL",
+    "service": "Screen Replacement",
+    "rating": 4,
+    "content": "The replacement AMOLED digitizer assembly module fits solidly with no bezel alignment gaps. Optical sub-screen sensor matrix maps nicely. Good turnaround time at Kingsford lab.",
+    "createdAt": {"$date": "2026-04-05T15:30:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "665a0000f1d2c34a5e6f5012"},
+    "customerName": "Sarah Connor",
+    "device": "Apple iPhone 16 Pro Max",
+    "service": "Charging Port Repair",
+    "rating": 5,
+    "content": "USB-C telemetry line pinned out and modular charging port module swapped cleanly. Hyper-charging voltage rates match factory profiles exactly now. Smooth queue checkout flow.",
+    "createdAt": {"$date": "2026-05-10T09:40:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "665a0000f1d2c34a5e6f5013"},
+    "customerName": "Tony Stark",
+    "device": "Samsung Galaxy S26 Ultra",
+    "service": "Battery Replacement",
+    "rating": 5,
+    "content": "Fast power node cells replacement pipeline. Current throttling profiles are completely gone, and energy output stability is perfectly uniform. Exceptional administrative diagnostic logs.",
+    "createdAt": {"$date": "2026-05-18T13:15:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "665a0000f1d2c34a5e6f5014"},
+    "customerName": "Peter Parker",
+    "device": "Google Pixel 9 Pro XL",
+    "service": "Camera Glass Repair",
+    "rating": 5,
+    "content": "Rear structural visor lens element array swapped out without messing up the optical image stabilization motors underneath. Lens glare index is back to zero. Perfect focal tracking.",
+    "createdAt": {"$date": "2026-05-22T16:20:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "665a0000f1d2c34a5e6f5015"},
+    "customerName": "Diana Prince",
+    "device": "Apple iPad Pro 13",
+    "service": "Screen Replacement",
+    "rating": 5,
+    "content": "Massive Tandem OLED display structure replaced seamlessly. ProMotion refresh frequency arrays remain liquid-smooth at 120Hz with zero capacitive digitization lag. Outstanding bench craftsmanship.",
+    "createdAt": {"$date": "2026-05-25T11:55:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "665a0000f1d2c34a5e6f5016"},
+    "customerName": "Barry Allen",
+    "device": "Apple iPhone 17 Pro Max",
+    "service": "Screen Replacement",
+    "rating": 5,
+    "content": "Extremely swift service execution script. Shattered ceramic shield array extracted and brand new digitizer calibrated in record time. Zero complaints, elite system performance.",
+    "createdAt": {"$date": "2026-05-26T17:02:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "665a0000f1d2c34a5e6f5017"},
+    "customerName": "Selina Kyle",
+    "device": "Huawei Mate 80 Pro Max",
+    "service": "Battery Replacement",
+    "rating": 4,
+    "content": "The power block expansion runtime matrix has been completely restored to full capacity. The phone housing seal is perfectly flushed again. Great hardware diagnostic tracking.",
+    "createdAt": {"$date": "2026-05-27T12:44:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "665a0000f1d2c34a5e6f5018"},
+    "customerName": "Arthur Curry",
+    "device": "Samsung Galaxy S23 Ultra",
+    "service": "Charging Port Repair",
+    "rating": 3,
+    "content": "The computational connection interface module syncs data normally again. Only rating 3 stars because the booking queue processing terminal was running into a slight network lag during pickup.",
+    "createdAt": {"$date": "2026-05-28T10:12:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "665a0000f1d2c34a5e6f5019"},
+    "customerName": "Hal Jordan",
+    "device": "Apple iPhone 16 Pro Max",
+    "service": "Screen Replacement",
+    "rating": 5,
+    "content": "The repair interface architecture is incredibly professional. The display matrix rendering output is bright with crisp refresh frequencies. Completely resolved all digitization dead zones.",
+    "createdAt": {"$date": "2026-05-30T15:20:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "665a0000f1d2c34a5e6f5020"},
+    "customerName": "Wanda Maximoff",
+    "device": "Google Pixel 9 Pro XL",
+    "service": "Motherboard Repair",
+    "rating": 5,
+    "content": "A highly sophisticated micro-soldering interface routine saved my corrupted partition parameters. Power rails are perfectly mapped and running stable. Exceptional diagnostic lab tier.",
+    "createdAt": {"$date": "2026-05-31T19:55:00.000Z"}
+  }
+]

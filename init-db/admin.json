@@ -1,0 +1,9 @@
+[
+  {
+    "_id": {"$oid": "6659f1b3f1d2c34a5e6f6001"},
+    "email": "admin@simmobile.com.au",
+    "password": "$2b$10$y6uCunQfQ4.1O.E3wG0hhu9M3zXv8gKz20N5L6F27w.M8/xR8m1G2", 
+    "role": "SuperAdmin",
+    "createdAt": {"$date": "2026-01-01T00:00:00.000Z"}
+  }
+]

@@ -1,0 +1,122 @@
+[
+  {
+    "_id": {"$oid": "6659f1b3f1d2c34a5e6f4001"},
+    "firstName": "Tom",
+    "lastName": "Hanks",
+    "email": "tom.hanks@hotmail.com",
+    "phone": "0412999888",
+    "service": "Water Damage Repair",
+    "model": "iPhone 16 Pro",
+    "description": "My hardware dropped inside liquid lines yesterday. System cannot power on now, red indicator showing inside tray. Need structural assessment.",
+    "status": "Pending",
+    "createdAt": {"$date": "2026-05-30T10:15:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "6659f1b3f1d2c34a5e6f4002"},
+    "firstName": "David",
+    "lastName": "Beckham",
+    "email": "david.b@gmail.com",
+    "phone": "0422888777",
+    "service": "Screen Replacement",
+    "model": "Galaxy S26 Ultra",
+    "description": "The front glass substrate is completely fractured near the upper boundary line, but the digitizer panel still handles touch inputs perfectly. Quote needed.",
+    "status": "Pending",
+    "createdAt": {"$date": "2026-05-28T14:22:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "6659f1b3f1d2c34a5e6f4003"},
+    "firstName": "Emma",
+    "lastName": "Watson",
+    "email": "emma.w@outlook.com",
+    "phone": "0433777666",
+    "service": "Battery Replacement",
+    "model": "iPhone 16 Pro Max",
+    "description": "Device system logs indicate severe battery capacity degradation. Sudden power shutdowns occurring at twenty percent baseline load parameters. Need a cell swap.",
+    "status": "Processed",
+    "createdAt": {"$date": "2026-05-25T09:05:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "6659f1b3f1d2c34a5e6f4004"},
+    "firstName": "Robert",
+    "lastName": "Downey",
+    "email": "rdj@starkindustries.com",
+    "phone": "0444666555",
+    "service": "Motherboard Repair",
+    "model": "Huawei Mate 80 Pro Max",
+    "description": "The device processing core keeps power-cycling into an infinite bootloop sequence right after a high-voltage surge block anomaly during overnight charging lines.",
+    "status": "Pending",
+    "createdAt": {"$date": "2026-05-22T16:45:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "6659f1b3f1d2c34a5e6f4005"},
+    "firstName": "Scarlett",
+    "lastName": "Johansson",
+    "email": "scarlett.j@yahoo.com",
+    "phone": "0455555444",
+    "service": "Back Glass Repair",
+    "model": "iPhone 17 Pro Max",
+    "description": "Rear frosted matrix shell completely shattered after high velocity contact with concrete layout. Internal wireless charging coils seem undamaged but look fully exposed.",
+    "status": "Pending",
+    "createdAt": {"$date": "2026-05-20T11:30:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "6659f1b3f1d2c34a5e6f4006"},
+    "firstName": "Chris",
+    "lastName": "Evans",
+    "email": "cap.evans@gmail.com",
+    "phone": "0466444333",
+    "service": "Charging Port Repair",
+    "model": "Pixel 9 Pro XL",
+    "description": "The USB-C connection gateway fails to hold data links steady. Telemetry cable physically slips out of the port housing with zero friction tension.",
+    "status": "Processed",
+    "createdAt": {"$date": "2026-05-15T08:12:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "6659f1b3f1d2c34a5e6f4007"},
+    "firstName": "Taylor",
+    "lastName": "Swift",
+    "email": "taylor.s@reputation.com",
+    "phone": "0477333222",
+    "service": "Screen Replacement",
+    "model": "Galaxy S24",
+    "description": "Vertical green line trace defect spanning across the central axis of the OLED display matrix panel after an accidental drop event. No glass damage present.",
+    "status": "Pending",
+    "createdAt": {"$date": "2026-05-11T13:50:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "6659f1b3f1d2c34a5e6f4008"},
+    "firstName": "Elon",
+    "lastName": "Musk",
+    "email": "elon@spacex.com",
+    "phone": "0499000420",
+    "service": "Water Damage Repair",
+    "model": "Galaxy S26 Ultra",
+    "description": "Device submerged under high pressure saltwater lines. Core processing unit completely unresponsive. Requesting aggressive ultrasonic cleaning sequence and trace diagnostic pass.",
+    "status": "Pending",
+    "createdAt": {"$date": "2026-05-08T07:25:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "6659f1b3f1d2c34a5e6f4009"},
+    "firstName": "Selena",
+    "lastName": "Gomez",
+    "email": "selena.g@icloud.com",
+    "phone": "0488222111",
+    "service": "Battery Replacement",
+    "model": "iPhone 16 Series",
+    "description": "The middle frame panel displays slight bowing due to an expanding internal lithium-ion battery pouch cell architecture. Safely disconnecting and need urgent replacement node extraction.",
+    "status": "Processed",
+    "createdAt": {"$date": "2026-04-30T15:10:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "6659f1b3f1d2c34a5e6f4010"},
+    "firstName": "Bruce",
+    "lastName": "Banner",
+    "email": "hulk.banner@avengers.org",
+    "phone": "0499111000",
+    "service": "Screen Replacement",
+    "model": "iPhone 17 Pro Max",
+    "description": "Heavy kinetic force payload impacted the front ceramic shield array directly. Digitizer is dead, display screen flashes randomized artifact matrices on boot.",
+    "status": "Pending",
+    "createdAt": {"$date": "2026-04-25T12:00:00.000Z"}
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "_id": {"$oid": "6659f1b3f1d2c34a5e6f7001"},
+    "fullName": "Wei Wei",
+    "email": "willauunsw@gmail.com",
+    "password": "$2b$10$X7mEvyk9nZ7MOm6G7Y06reP2jWbXkYw9fKzI4GZexR0k0vC0N.gK.", 
+    "createdAt": {"$date": "2026-01-15T08:00:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "6659f1b3f1d2c34a5e6f7002"},
+    "fullName": "John Doe",
+    "email": "john.doe@gmail.com",
+    "password": "$2b$10$X7mEvyk9nZ7MOm6G7Y06reP2jWbXkYw9fKzI4GZexR0k0vC0N.gK.",
+    "createdAt": {"$date": "2026-02-20T11:30:00.000Z"}
+  }
+]

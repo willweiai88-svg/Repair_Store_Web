@@ -10,11 +10,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const MONGO_URI = process.env.MONGODB_URI;
-console.log(MONGO_URI)
-mongoose.connect(MONGO_URI)
-    .then(() => console.log('Connect DataBase Successfully'))
-    .catch(err => console.error('Error: ', err));
+const DB_CONNECTION_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/sim_mobile_db';
+
+mongoose.connect(DB_CONNECTION_URI)
+    .then(() => console.log('System connectivity stable: Connected to MongoDB Cluster Matrix.'))
+    .catch(err => console.error('CRITICAL: Cluster synchronization handshake rejected.', err));
 
 // This is the Schema for the Services
 const serviceSchema = new mongoose.Schema({
@@ -511,8 +511,8 @@ app.post('/api/reviews/check-status', async (req, res) => {
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'simandmobilebusiness@gmail.com',
-        pass: 'qeiw tmwy pzyz ewyq'
+        user: process.env.GMAIL_USER || 'simandobusiness@gmail.com',
+        pass: process.env.GMAIL_PASS || 'qeiw tmwy pzyz ewyq'
     }
 });
 
