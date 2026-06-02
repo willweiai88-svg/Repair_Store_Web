@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Sim & Mobile</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { neonBlue: '#00f3ff', neonGold: '#fadb5f', darkBg: '#080b12' },
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], mono: ['Fira Code', 'monospace'] }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .fulfil-btn.fulfil-active { background-color: rgba(0,243,255,0.15); border-color:#00f3ff; color:#00f3ff; }
+        .field-error { border-bottom-color:#ef4444 !important; }
+    </style>
+</head>
+
+<body class="antialiased font-sans bg-darkBg text-white selection:bg-neonBlue selection:text-black min-h-screen flex flex-col">
+
+    <nav class="fixed w-full z-50 bg-darkBg/90 backdrop-blur-xl border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold tracking-wider text-neonBlue hover:opacity-80 transition">
+                SIM <span class="text-white">&</span> MOBILE
+            </a>
+            <a href="shop.html" class="flex items-center gap-2 text-gray-300 hover:text-neonBlue transition font-mono text-sm border border-gray-600 hover:border-neonBlue px-4 py-2 rounded-full">
+                ← Back to Shop
+            </a>
+        </div>
+    </nav>
+
+    <main class="flex-grow pt-32 pb-20 px-6 relative overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-1/2 bg-neonBlue/10 blur-[120px] rounded-full pointer-events-none -z-10"></div>
+
+        <div class="max-w-5xl mx-auto">
+            <header class="mb-8 flex items-end justify-between">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-black">Secure <span class="text-neonBlue glow-text">Checkout</span></h1>
+                    <p class="text-gray-400 text-sm mt-1">Review your order and confirm collection or delivery.</p>
+                </div>
+                <span id="auth-status-badge" class="text-[11px] font-mono uppercase tracking-wider border border-white/10 text-gray-400 px-3 py-1.5 rounded-full">Guest</span>
+            </header>
+
+            <!-- EMPTY STATE -->
+            <div id="empty-state" class="hidden glass-panel rounded-3xl p-16 text-center">
+                <div class="text-6xl mb-4 opacity-40">🛒</div>
+                <p class="text-gray-400 font-mono mb-6">Your cart is empty.</p>
+                <a href="shop.html" class="bg-neonBlue text-black font-bold px-6 py-3 rounded-xl hover:bg-white transition uppercase tracking-wide text-sm">Browse the showcase</a>
+            </div>
+
+            <!-- CONFIRMATION STATE -->
+            <div id="confirm-state" class="hidden glass-panel rounded-3xl p-12 text-center border border-neonBlue/30">
+                <div class="text-6xl mb-4">✅</div>
+                <h2 class="text-2xl font-black mb-2">Order Confirmed</h2>
+                <p class="text-gray-400 font-mono text-sm mb-6">Reference: <span id="confirm-id" class="text-neonBlue"></span></p>
+                <p class="text-gray-300 mb-8">A confirmation has been queued to <span id="confirm-email" class="text-neonGold"></span>. Total charged: <span id="confirm-total" class="text-white font-bold"></span>.</p>
+                <div class="flex gap-3 justify-center">
+                    <a href="shop.html" class="bg-neonBlue text-black font-bold px-6 py-3 rounded-xl hover:bg-white transition uppercase tracking-wide text-sm">Keep shopping</a>
+                    <a href="index.html" class="border border-white/15 text-gray-300 px-6 py-3 rounded-xl hover:border-neonBlue hover:text-neonBlue transition text-sm">Home</a>
+                </div>
+            </div>
+
+            <!-- CHECKOUT GRID -->
+            <div id="checkout-grid" class="hidden grid grid-cols-1 lg:grid-cols-5 gap-8">
+
+                <!-- Cart + customer details -->
+                <section class="lg:col-span-3 space-y-6">
+                    <div class="glass-panel rounded-2xl p-6">
+                        <h2 class="text-sm font-bold font-mono uppercase tracking-wider mb-4">Your items</h2>
+                        <div id="line-items" class="space-y-3"></div>
+                    </div>
+
+                    <div class="glass-panel rounded-2xl p-6">
+                        <h2 class="text-sm font-bold font-mono uppercase tracking-wider mb-4">Fulfilment</h2>
+                        <div class="flex gap-2 mb-4">
+                            <button data-fulfil="pickup" class="fulfil-btn fulfil-active text-xs font-mono px-4 py-2 rounded-lg border border-white/10 text-gray-400 transition">🏬 Store pickup</button>
+                            <button data-fulfil="delivery" class="fulfil-btn text-xs font-mono px-4 py-2 rounded-lg border border-white/10 text-gray-400 transition">🚚 Delivery</button>
+                        </div>
+                        <div id="pickup-fields">
+                            <label class="text-[10px] font-mono uppercase tracking-widest text-gray-500">Collection store</label>
+                            <select id="pickup-store" class="w-full bg-black/40 rounded-lg px-3 py-2.5 text-sm mt-1 border border-white/10 focus:border-neonBlue focus:outline-none">
+                                <option value="">Select a store…</option>
+                                <option>Sydney CBD</option>
+                                <option>World Square</option>
+                                <option>Burwood</option>
+                                <option>Mascot</option>
+                                <option>Kingsford</option>
+                            </select>
+                        </div>
+                        <div id="delivery-fields" class="hidden">
+                            <label class="text-[10px] font-mono uppercase tracking-widest text-gray-500">Delivery address</label>
+                            <textarea id="delivery-address" rows="3" class="w-full bg-black/40 rounded-lg px-3 py-2.5 text-sm mt-1 border border-white/10 focus:border-neonBlue focus:outline-none" placeholder="Unit / Street / Suburb / Postcode"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-2xl p-6">
+                        <h2 class="text-sm font-bold font-mono uppercase tracking-wider mb-4">Contact details</h2>
+                        <div id="guest-auth-prompt" class="text-[11px] font-mono text-gray-400 mb-4 hidden">
+                            Have an account? <a href="login.html" class="text-neonBlue hover:underline">Log in</a> for member pricing.
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <input id="co-firstname" type="text" placeholder="First name *" class="w-full px-1 py-2 text-sm">
+                                <p data-err="firstName" class="text-[10px] text-red-400 font-mono mt-1 hidden"></p>
+                            </div>
+                            <div>
+                                <input id="co-lastname" type="text" placeholder="Last name *" class="w-full px-1 py-2 text-sm">
+                                <p data-err="lastName" class="text-[10px] text-red-400 font-mono mt-1 hidden"></p>
+                            </div>
+                            <div>
+                                <input id="co-email" type="email" placeholder="Email *" class="w-full px-1 py-2 text-sm">
+                                <p data-err="email" class="text-[10px] text-red-400 font-mono mt-1 hidden"></p>
+                            </div>
+                            <div>
+                                <input id="co-phone" type="tel" placeholder="Mobile * (04XX XXX XXX)" class="w-full px-1 py-2 text-sm">
+                                <p data-err="phone" class="text-[10px] text-red-400 font-mono mt-1 hidden"></p>
+                            </div>
+                        </div>
+                        <p data-err="fulfilment" class="text-[10px] text-red-400 font-mono mt-3 hidden"></p>
+                    </div>
+                </section>
+
+                <!-- Order summary -->
+                <aside class="lg:col-span-2">
+                    <div class="glass-panel rounded-2xl p-6 lg:sticky lg:top-28">
+                        <h2 class="text-sm font-bold font-mono uppercase tracking-wider mb-5">Order summary</h2>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between text-gray-400"><span>Subtotal (RRP)</span><span id="sum-subtotal">$0</span></div>
+                            <div id="sum-savings-row" class="flex justify-between text-neonGold hidden"><span>Member savings</span><span id="sum-savings">-$0</span></div>
+                            <div class="flex justify-between text-gray-400"><span>Fulfilment</span><span id="sum-fulfil" class="text-gray-300">Pickup — Free</span></div>
+                            <div class="border-t border-white/10 pt-3 flex justify-between text-lg font-black"><span>Total</span><span id="sum-total" class="text-white">$0</span></div>
+                        </div>
+                        <button id="place-order" class="w-full bg-neonBlue text-black font-bold py-4 rounded-xl hover:bg-white transition shadow-[0_0_20px_rgba(0,243,255,0.4)] text-sm uppercase tracking-wide mt-6">Place order</button>
+                        <p class="text-[10px] text-gray-500 font-mono text-center mt-3">Demo checkout — no real payment is processed.</p>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/config.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/checkout.js"></script>
+</body>
+
+</html>
